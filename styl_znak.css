@@ -1,8 +1,9 @@
-div
+#droga
 {
     width: 400px;
-    height: 800px;
-    align-content: center;
+    height: 400px;
+    text-align: center;
+    margin: auto;
 }
 
 p
@@ -15,9 +16,36 @@ p
     padding: 2px;
     font-size: 18px;
     text-align: center;
+    margin: auto;
 }
 
-img
+#znak
 {
-    width: 280px;
+    padding: 10px;
+    margin: auto;
+    margin-top: 15px;
+    background: white;
+	border:16px solid rgb(212, 0, 0);
+    border-radius: 50%;
+    width: 160px;
+    height: 160px; 
+}
+
+#toaleta {
+	margin: auto;
+	background-color:white;
+	border:40px solid blue;
+  	box-shadow: 0 0 0 10px white, 0 0 0 12px black;
+	margin-bottom:20px;
+	margin-top:20px;
+	font-size:650%;
+	font-family: Tahoma;
+	text-align: center;
+	width: 200px;
+	height: 200px;
+	line-height: 200px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
