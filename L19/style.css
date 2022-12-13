@@ -1,0 +1,92 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: "Playfair Display", serif;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(78, 122, 19);
+}
+
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(139, 59, 27);
+	height: 120px;
+	font-size: 24px;
+    color: wheat;
+}
+
+.content {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.lewy {
+	width: 15%;
+	height: 82vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(48, 94, 11);
+}
+
+table, th, tr, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 10px;
+	background-color: rgb(139, 59, 27);
+	cursor: crosshair;
+    color: wheat;
+}
+
+th {
+	background-color: rgba(75, 170, 31, 0.568);
+}
+
+.środek {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	background-color: alpha;
+}
+
+img{
+	cursor: pointer;
+	width: 400px;
+}
+
+.prawy {
+	width: 20%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: rgb(48, 94, 11);
+}
+
+.prawy p {
+	width: 80%;
+	cursor: help;
+    color: wheat;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+	text-align: center;
+	background-color: rgb(30, 48, 8);
+	height: 60px;
+    color: wheat;
+}
+
+footer p {
+	float: right;
+}
