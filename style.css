@@ -147,6 +147,12 @@
     background-color: rgb(167, 167, 167);
     background-blend-mode: multiply;
 }
+.karta14:hover
+{
+    background-image: url(zdj/karta14.jpg);
+    background-color: rgb(167, 167, 167);
+    background-blend-mode: multiply;
+}
 
 
 .karta:hover
