@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Gabarito', cursive;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(zdj/tło3.svg);
+    background-size: cover;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 8vh;
+    background-color: grey;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.aktywny {
+    border: 1px solid aliceblue;
+    box-shadow: 0 0 20px rgb(96, 94, 223);
+    background-color: rgb(70, 70, 136);
+    color: aliceblue;
+}
+
+.tekst_aktywny {
+    text-shadow: 0 0 10px rgb(255, 255, 255);
+    color: rgb(92, 89, 224);
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 92vh;
+}
+
+.pokaz {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 50vw;
+    height: 80vh;
+    background-color: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    border-radius: 50px;
+}
+
+.boczny {
+    /* padding: 25px; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20vw;
+    height: 80vh;
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border-radius: 50px;
+}
+
+h2 {
+    color: aliceblue;
+    text-shadow: 0 0 5px black;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.boczny p {
+    margin: 25px;
+    font-size: 1.2rem;
+}
+
+.gablota {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    height: 95%;
+    padding: 10px;
+}
+
+.gablota p {
+    color: aliceblue;
+    text-shadow: 0 0 5px black;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.mundurek {
+    height: inherit;
+    object-fit: contain;
+}
