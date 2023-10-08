@@ -110,3 +110,13 @@ h2 {
     height: inherit;
     object-fit: contain;
 }
+
+@media all and (max-width: 1650px) {
+    h2 {
+        font-size: 1.2rem;
+    }
+    
+    .boczny p {
+        font-size: 0.8rem;
+    }
+}
