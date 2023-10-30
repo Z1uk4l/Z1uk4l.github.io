@@ -1,0 +1,1025 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 12vh;
+    width: 100%;
+    background-color: white;
+}
+
+.logo {
+    max-width: 100%;
+    height: 11vh;
+    margin-right: 20px;
+}
+
+.name p {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+    margin-left: 20px;
+}
+
+.hero {
+    background: linear-gradient(0deg, rgba(255, 0, 0, 0.28) 0%, rgba(140, 28, 28, 0.00) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.70) 0%, rgba(0, 0, 0, 0.70) 100%), url(zdj/Pomiar\ i\ sterowanie\ 3\ źródłami\ grzewczymi\ Szafa.jpg), lightgray 50% / cover no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 45vh;
+    min-height: 275px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar {
+    align-self: flex-end;
+    justify-self: flex-start;
+    margin: 5vh 10vw 3vh 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+.menu li {
+    list-style-type: none;
+}
+
+.menu li a {
+    line-height: 1;
+    padding: 5px 1vw;
+    text-decoration: none;
+    color: aliceblue;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    transition: 0.3s ease;
+}
+
+.menu li a:hover {
+    box-shadow: 0 -2px 0px #fff inset;
+}
+
+.hamburger {
+    position: absolute;
+    width: 30px;
+    height: 4px;
+    background: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 2;
+    transition: 0.3s;
+}
+
+.hamburger:before,
+.hamburger:after {
+    content: "";
+    position: absolute;
+    height: 4px;
+    right: 0;
+    background: #fff;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.hamburger:before {
+    top: -10px;
+    width: 30px;
+}
+
+.hamburger:after {
+    top: 10px;
+    width: 30px;
+}
+
+.toggle-menu {
+    position: relative;
+    height: 100%;
+    z-index: 3;
+    cursor: pointer;
+    opacity: 0;
+    width: 25px;
+    height: 25px;
+}
+
+.hamburger,
+.toggle-menu {
+    display: none;
+}
+
+.menu-hamburger:before {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
+.menu-hamburger:after {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.tagline {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    margin: 3vh 10vw 3vh;
+}
+
+.line1 {
+    color: aliceblue;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 2rem;
+}
+
+.line2 {
+    color: rgb(220, 15, 15);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 3rem;
+}
+
+.extensions {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 0vh 5vw 5vh 0;
+}
+
+.icon {
+    height: 5vh;
+}
+
+/* Main section of the website */
+
+main {
+    padding-bottom: 2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(241, 241, 241);
+}
+
+/* Main page */
+
+.msection1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin: 5vh 10vh 2.5vh 10vh;
+}
+
+.mphoto1 {
+    height: 400px;
+    width: 32.5vw;
+    object-fit: cover;
+    object-position: -300px center;
+    border-radius: 10px;
+    box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.40);
+}
+
+.mtext1 {
+    width: 32.5vw;
+}
+
+.heading1 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+}
+
+.headingline1 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 300px;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.text1 {
+    color: rgb(49, 49, 49);
+    font-family: Inter;
+    text-wrap: balance;
+    font-size: 1.2rem;
+    line-height: 30px;
+}
+
+.mphoto2 {
+    height: 400px;
+    width: 32.5vw;
+    object-fit: contain;
+    object-position: center;
+}
+
+.mtext1 a {
+    text-decoration: none;
+    color: rgb(49, 49, 49);
+    font-family: Inter;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.anchor1 {
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+
+.anchor1 a:hover {
+    color: red;
+}
+
+.headingline2 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 25vw;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.divider {
+    border: solid 1px rgb(49, 49, 49);
+    border-bottom:2px solid rgb(49, 49, 49);
+    width: 70vw;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.msection3 {
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.5vh;
+    margin-bottom: 2.5vh;
+}
+
+.text2 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 110%;
+}
+
+.text3 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+button {
+    margin-top: 2.5vh;
+    margin-bottom: 2.5vh;
+    height: 80px;
+    width: 400px;
+    border-radius: 20px;
+    border: none;
+    background: linear-gradient(0deg, rgba(255, 0, 0, 0.50) 0%, rgba(142, 38, 38, 0.00) 109.64%), #B82626;
+    box-shadow: 0px 0px 9px 0px rgba(211, 13, 13, 0.50);
+    color: #FFF;
+    text-align: center;
+    font-family: Kanit;
+    font-size: 36px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* Services */
+
+.heading2 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 2.2rem;
+}
+
+.heading3 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+.headingline3 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 500px;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.ssection1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin: 5vh 10vh 2.5vh 10vh;
+}
+
+.sphoto1 {
+    height: 600px;
+    width: 30vw;
+    object-fit: contain;
+    object-position: center;
+}
+
+.stext1 {
+    width: 35vw;
+}
+
+.stext2 {
+    width: 35vw;
+}
+
+.list1 {
+    list-style: none;
+    padding-left: 0;
+}
+
+.list1 li:before {
+    content: '✓';
+    color: red;
+}
+
+.list1 li {
+    color: rgb(49, 49, 49);
+    font-family: Inter;
+    text-wrap: balance;
+    font-size: 1.2rem;
+    line-height: 30px;
+    margin-bottom: 1.5vh;
+}
+
+.headingline4 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 500px;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.sphoto2 {
+    width: 70vw;
+    object-fit: contain;
+    object-position: center;
+}
+
+.ssection3 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin: 5vh 10vh 2.5vh 10vh;
+}
+
+.sphoto3 {
+    height: 600px;
+    width: 30vw;
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Inteligentne domy */
+
+.isection1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin: 5vh 10vh 2.5vh 10vh;
+}
+
+.isection2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin: 5vh 10vh 2.5vh 10vh;
+}
+
+.headingline45 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 340px;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.text4 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+.red {
+    color: rgb(233, 21, 21);
+    font-weight: 700;
+}
+
+.iphoto1 {
+    width: 32.5vw;
+    object-fit: cover;
+}
+
+.iphoto2 {
+    width: 32.5vw;
+    object-fit: cover;
+}
+
+.iphoto3 {
+    margin-top: 2vh;
+    width: 25vw;
+    object-fit: cover;
+}
+
+/* About us */
+
+.asection1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    margin: 5vh 10vh 2.5vh 10vh;
+}
+
+.atext1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50vw;
+}
+
+.heading4 {
+    color: rgb(22, 22, 22);
+    font-family: 'Kanit', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 3rem;
+}
+
+.aphoto1 {
+    max-width: 500px;
+    min-width: 200px;
+    width: 30vw;
+    object-fit: cover;
+}
+
+.headingline5 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 350px;
+    margin: 0.5vh 0 2vh 0;
+}
+
+.headingline6 {
+    border: solid 1px red;
+    border-bottom:5px solid red;
+    width: 380px;
+    margin: 0.5vh 0 2vh 0;
+}
+
+/* Contact us */
+
+.mapa {
+    width: 65vw;
+}
+
+.ctext1 {
+    width: 25vw;
+}
+
+.cicon {
+    height: 4vh;
+    color: #0e0e0e;
+}
+
+.csocials {
+    margin-top: 2vh;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1vw;
+}
+
+/* Footer of a website */
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 28vh;
+    background-color: #0e0e0e;
+    bottom: 0;
+    gap: 8vh
+}
+
+.fsection1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.ftext1 {
+    color: #FFF;
+    text-align: center;
+    font-family: Kanit;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ftext2 {
+    color:rgb(220, 15, 15);
+    text-align: center;
+    font-family: Kanit;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.fsection1 a {
+    text-decoration: underline;
+    color: #FFF;
+    font-family: Kanit;
+    cursor: pointer;
+}
+
+.fsection2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2vh;
+}
+
+.ficon {
+    height: 4vh;
+}
+
+.contact {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1vw;
+}
+
+.phone {
+    color:#FFF;
+    text-align: center;
+    font-family: Kanit;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.mail {
+    color:#FFF;
+    text-align: center;
+    font-family: Kanit;
+    font-size: 2rem;
+    font-weight: 400;
+}
+
+.socials {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1vw;
+}
+
+.ftext3 {
+    color: rgb(255, 255, 255);
+    font-family: Inter;
+    text-wrap: balance;
+    font-size: 0.7rem;
+    padding: 0;
+    margin: 0;
+}
+
+.copyrights {
+    margin-top: 1vh;
+    width: 30vw;
+}
+
+@media only screen and (max-width: 1170px) {
+    
+    .logo {
+        height: 8vh;
+    }
+    
+    .name p {
+        font-size: 2rem;
+    }
+
+    .menu {
+        display: flex;
+    }
+
+    .msection1 {
+        flex-direction: column;
+    }
+
+    .mphoto1 {
+        width: 70vw;
+        object-position: -120px center;
+    }
+    
+    .mtext1 {
+        width: 70vw;
+    }
+
+    .headingline2 {
+        width: 60vw;
+    }
+
+    .mtext2 {
+        width: 70vw;
+    }
+
+    .mphoto2 {
+        width: 70vw;
+    }
+
+    .ftext1 {
+        font-size: 1.5rem;
+    }
+    
+    .ftext2 {
+        font-size: 2rem;
+    }
+
+    .phone {
+        font-size: 1.5rem;
+    }
+    
+    .mail {
+        font-size: 1.5rem;
+    }
+
+    .ficon {
+        height: 3.5vh;
+    }
+
+    .ssection1 {
+        flex-direction: column;
+    }
+    
+    .stext1 {
+        width: 70vw;
+    }
+
+    .stext2 {
+        width: 70vw;
+    }
+
+    .ssection3 {
+        flex-direction: column;
+    }
+    
+    .sphoto1 {
+        width: 90vw;
+    }
+    .sphoto2 {
+        width: 70vw;
+    }
+    .sphoto3 {
+        width: 90vw;
+    }
+
+    .isection1, .isection2 {
+        flex-direction: column;
+    }
+
+    .itext1, .itext2 {
+        width: 70vw;
+    }
+
+    .text4 {
+        font-size: 1.5rem;
+    }
+    
+    .iphoto1 {
+        width: 70vw;
+    }
+    
+    .iphoto2 {
+        width: 70vw;
+    }
+    
+    .iphoto3 {
+        width: 30vw;
+    }
+    
+    .atext1 {
+        width: 70vw;
+    }
+
+    .ctext1 {
+        width: 70vw;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .logo {
+        height: 6vh;
+    }
+    
+    .name p {
+        font-size: 1.7rem;
+    }
+
+    .menu {
+        display: flex;
+    }
+
+    footer {
+        flex-direction: column;
+        height: 500px;
+        gap: 5vh;
+    }
+
+    .fsection1 {
+        align-items: center;
+    }
+    
+    .fsection2 {
+        margin-top: 4vh;
+        align-items: center;
+    }
+
+    .copyrights {
+        width: 60vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ftext3 {
+        text-wrap: wrap;
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .hamburger,
+    .toggle-menu {
+        display: block;
+    }
+
+    .menu {
+        justify-content: start;
+        flex-direction: column;
+        gap: 2vh;
+        align-items: center;
+        position: absolute;
+        top: 12vh;
+        display: none;
+        right: 0;
+        background-color: rgba(37, 37, 37, 1);
+        width: 50vw;
+        height: 35vh;
+        padding-top: 10vh;
+    }
+
+    .menu li {
+        width: 100%;
+    }
+
+    .menu li a {
+        padding-left: 3vw;
+        font-size: 1.8rem;
+    }
+
+    .menu li a:hover {
+        box-shadow: 0 -2px 0px #ff0000 inset;
+    }
+    
+}
+
+@media only screen and (max-width: 600px) {
+    .name p {
+        font-size: 1.2rem;
+    }
+
+    .menu li a {
+        font-size: 1.2rem;
+    }
+
+    .line1 {
+        font-size: 1.2rem;
+    }
+    
+    .line2 {
+        font-size: 2rem;
+    }
+
+    .extensions {
+        gap: 1rem;
+        margin: 0vh 1vw 5vh 0;
+    }
+
+    .headingline1 {
+        width: 200px;
+    }
+
+    .headingline3 {
+        width: 200px;
+    }
+
+    .headingline4 {
+        width: 200px;
+    }
+
+    .headingline45 {
+        width: 200px;
+    }
+
+    .headingline5 {
+        width: 220px;
+    }
+
+    .headingline6 {
+        width: 200px;
+    }
+
+    button {
+        width: 350px;
+        font-size: 1.7rem;
+    }
+
+    .sphoto2 {
+        display: none;
+    }
+
+    footer {
+        height: 450px;
+    }
+
+    .ftext1 {
+        font-size: 1.5rem;
+    }
+    
+    .ftext2 {
+        font-size: 2rem;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .logo {
+        height: 6vh;
+    }
+    
+    .name p {
+        font-size: 1rem;
+    }
+
+    .menu li a {
+        font-size: 1rem;
+    }
+
+    .line1 {
+        font-size: 1.2rem;
+        line-height: 110%;
+    }
+    
+    .line2 {
+        line-height: 100%;
+        font-size: 2rem;
+    }
+
+    .extensions {
+        gap: 1rem;
+        margin: 0vh 1vw 5vh 0;
+    }
+    
+    .icon {
+        height:4vh;
+    }
+
+    .heading1 {
+        font-size: 2rem;
+    }
+    
+    .headingline1 {
+        width: 200px;
+    }
+
+    .mphoto1 {
+        object-position: -200px center;
+    }
+
+    .mphoto2 {
+        height: 200px;
+    }
+
+    button {
+        width: 300px;
+        font-size: 1.7rem;
+    }
+
+    .text1 {
+        font-size: 1rem;
+    }
+
+    .text2 {
+        font-size: 1.2rem;
+        line-height: 110%;
+    }
+    
+    .text3 {
+        font-size: 1rem;
+        line-height: 110%;
+    }
+
+    .heading2 {
+        font-size: 1.8rem;
+    }
+    
+    .heading3 {
+        font-size: 1.2rem;
+    }
+    
+    .headingline3 {
+        width: 200px;
+    }
+
+    .list1 li {
+        font-size: 1rem;
+        line-height: 30px;
+    }
+
+    .sphoto1 {
+        height: 400px;
+    }
+    
+    .sphoto2 {
+        display: none;
+    }
+
+    .headingline4 {
+        width: 200px;
+    }
+
+    .sphoto3 {
+        height: 300px;
+    }
+
+    .headingline45 {
+        width: 200px;
+    }
+    
+    .iphoto3 {
+        width: 50vw;
+    }
+
+    .headingline5 {
+        width: 220px;
+    }
+
+    .headingline6 {
+        width: 200px;
+    }
+
+    .mapa {
+        width: 80vw;
+    }
+
+    footer {
+        height: 550px;
+    }
+
+    .ftext1 {
+        font-size: 1.5rem;
+    }
+    
+    .ftext2 {
+        font-size: 2rem;
+    }
+}
