@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rekrutacja - SF BCC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class', theme: { extend: {
+    colors: { accent: { DEFAULT: '#E30613', dark: '#B8050F' }, noir: '#170D0D', blood: '#3D0A0C', paper: '#FAFAF8', ink: '#1C1C1E' },
+    fontFamily: { display: ['Montserrat', 'sans-serif'], sans: ['Inter', 'sans-serif'] },
+  } } }
+</script>
+<style>
+  :root { --section-bg: #FAFAF8; --section-bg-soft: rgba(250,250,248,.7); }
+  html.dark { --section-bg: #170D0D; --section-bg-soft: rgba(23,13,13,.7); }
+  html { scroll-behavior: smooth; }
+  body { background: var(--section-bg); transition: background-color .25s ease; }
+  * { transition: background-color .35s ease, color .35s ease, border-color .35s ease; }
+  .reveal { opacity:0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.is-visible { opacity:1; transform:none; }
+  .brand-chip { display:inline-block; width:.7rem; height:.7rem; background:#E30613; margin-right:.6rem; flex-shrink:0; }
+  .grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .03; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  html.dark .grain { opacity: .045; mix-blend-mode: overlay; }
+  .ghost-square { position: absolute; border: 1.5px solid rgba(227,6,19,.35); pointer-events: none; }
+  html.dark .ghost-square { border-color: rgba(227,6,19,.4); }
+  .ghost-square-gray { position: absolute; border: 1.5px solid rgba(161,161,170,.55); pointer-events: none; }
+  html.dark .ghost-square-gray { border-color: rgba(228,228,231,.28); }
+  .cta-pulse { position: relative; }
+  .cta-pulse::after { content:''; position:absolute; inset:0; border-radius:inherit; box-shadow: 0 0 0 0 rgba(227,6,19,.55); animation: ctaPulse 2.6s ease-out infinite; pointer-events:none; }
+  @keyframes ctaPulse { 0% { box-shadow: 0 0 0 0 rgba(227,6,19,.55); } 70% { box-shadow: 0 0 0 14px rgba(227,6,19,0); } 100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); } }
+  #mobileMenu { display: grid; grid-template-rows: 0fr; overflow: hidden; opacity: 0; transition: grid-template-rows .3s ease, opacity .25s ease; }
+  #mobileMenu.open { grid-template-rows: 1fr; opacity: 1; }
+  #mobileMenu > div { overflow: hidden; }
+  @media (min-width: 1024px) { #mobileMenu { display: none; } }
+  .dot-grid { background-image: radial-gradient(rgba(255,255,255,.1) 1px, transparent 1px); background-size: 22px 22px; }
+  .dot-field { position: absolute; pointer-events: none; background-image: radial-gradient(rgba(28,28,30,.22) 1.5px, transparent 1.5px); background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(circle at top left, black 0%, black 30%, transparent 72%);
+    mask-image: radial-gradient(circle at top left, black 0%, black 30%, transparent 72%); }
+  .dark .dot-field { background-image: radial-gradient(rgba(255,255,255,.16) 1.5px, transparent 1.5px); }
+  .dot-field-br { -webkit-mask-image: radial-gradient(circle at bottom right, black 0%, black 30%, transparent 72%); mask-image: radial-gradient(circle at bottom right, black 0%, black 30%, transparent 72%); }
+  .hero-fade { position: relative; -webkit-mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 100%); mask-image: linear-gradient(to bottom, black 0%, black 72%, transparent 100%); }
+  .field-input { width: 100%; border-radius: .75rem; border: 1px solid rgb(228 228 231); background: #fff; padding: .75rem 1rem; font-size: .95rem; color: #1C1C1E; transition: border-color .2s ease, box-shadow .2s ease; }
+  .field-input:focus { outline: none; border-color: #E30613; box-shadow: 0 0 0 3px rgba(227,6,19,.15); }
+  .dark .field-input { background: rgba(255,255,255,.03); border-color: rgba(255,255,255,.15); color: #fff; }
+  .custom-select-wrap { position: relative; }
+  .custom-select-native { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+  .custom-select-trigger { display: flex; align-items: center; justify-content: space-between; gap: .75rem; cursor: pointer; text-align: left; }
+  .custom-select-trigger:focus-visible { outline: none; border-color: #E30613; box-shadow: 0 0 0 3px rgba(227,6,19,.15); }
+  .custom-select-trigger .chev { flex-shrink: 0; color: #a1a1aa; transition: transform .2s ease; }
+  .dark .custom-select-trigger .chev { color: #71717a; }
+  .custom-select-trigger[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .custom-select-list { position: absolute; z-index: 30; top: calc(100% + .5rem); left: 0; right: 0; max-height: 15rem; overflow-y: auto; background: #fff; border: 1px solid rgb(228 228 231); border-radius: .75rem; box-shadow: 0 16px 32px -12px rgba(0,0,0,.2); padding: .4rem; list-style: none; margin: 0; scrollbar-width: thin; scrollbar-color: rgba(227,6,19,.45) rgba(0,0,0,.05); }
+  .dark .custom-select-list { background: #241414; border-color: rgba(255,255,255,.14); box-shadow: 0 16px 32px -12px rgba(0,0,0,.6); scrollbar-color: rgba(227,6,19,.45) rgba(255,255,255,.04); }
+  .custom-select-list::-webkit-scrollbar { width: 5px; }
+  .custom-select-list::-webkit-scrollbar-track { background: rgba(0,0,0,.05); border-radius: 999px; }
+  .dark .custom-select-list::-webkit-scrollbar-track { background: rgba(255,255,255,.04); }
+  .custom-select-list::-webkit-scrollbar-thumb { background: rgba(227,6,19,.45); border-radius: 999px; }
+  .custom-select-list[hidden] { display: none; }
+  .custom-option { padding: .55rem .75rem; border-radius: .5rem; font-size: .9rem; color: #1C1C1E; cursor: pointer; }
+  .dark .custom-option { color: #fff; }
+  .custom-option.is-active { background: rgba(227,6,19,.08); }
+  .dark .custom-option.is-active { background: rgba(227,6,19,.18); }
+  .custom-option.is-selected { color: #E30613; font-weight: 600; }
+  .field-label { display: block; font-size: .8rem; font-weight: 600; color: #71717a; margin-bottom: .4rem; }
+  html.dark .field-label { color: #a1a1aa; }
+  .form-step { display: none; }
+  .form-step.active { display: block; }
+  .step-dot { width: 2rem; height: 2rem; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 700; border: 2px solid rgb(228 228 231); color: #a1a1aa; transition: all .25s ease; flex-shrink: 0; }
+  .dark .step-dot { border-color: rgba(255,255,255,.15); color: #71717a; }
+  .step-dot.done { background: #E30613; border-color: #E30613; color: #fff; }
+  .step-dot.current { border-color: #E30613; color: #E30613; }
+  .step-line { flex: 1; height: 2px; background: rgb(228 228 231); }
+  .dark .step-line { background: rgba(255,255,255,.15); }
+  .step-line.done { background: #E30613; }
+  .dropzone { border: 1.5px dashed rgb(212 212 216); border-radius: .75rem; padding: 2rem 1rem; text-align: center; cursor: pointer; transition: border-color .2s ease, background-color .2s ease; }
+  .dropzone:hover, .dropzone.dragover { border-color: #E30613; background: rgba(227,6,19,.04); }
+  .dark .dropzone { border-color: rgba(255,255,255,.2); }
+
+  /* Ścieżka kariery: linia czasu (stepper) */
+  .tl-dots-row { position: relative; display: flex; justify-content: space-between; align-items: center; height: 3.25rem; }
+  .tl-line-bg { position: absolute; top: 50%; left: 6.25%; right: 6.25%; height: 3px; margin-top: -1.5px; background: rgb(228 228 231); border-radius: 999px; }
+  html.dark .tl-line-bg { background: rgba(255,255,255,.1); }
+  .tl-line-fill { position: absolute; top: 50%; left: 6.25%; width: 0; height: 3px; margin-top: -1.5px; border-radius: 999px;
+    background: linear-gradient(90deg, rgba(227,6,19,.4), #E30613); transition: width 2s cubic-bezier(.16,1,.3,1); }
+  .tl-item { position: relative; z-index: 10; flex: 1 1 0; display: flex; justify-content: center; }
+  .tl-dot { width: 2.75rem; height: 2.75rem; border-radius: 999px; border-width: 2px; border-style: solid; display: flex; align-items: center; justify-content: center;
+    font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: .95rem; background: var(--section-bg);
+    transform: scale(0); transition: transform .5s cubic-bezier(.34,1.56,.64,1), background-color .3s ease; cursor: pointer; }
+  .timeline-wrap.in-view .tl-dot { transform: scale(1); }
+  .tl-labels-row { display: flex; justify-content: space-between; margin-top: 1.25rem; }
+  .tl-label-item { flex: 1 1 0; text-align: center; padding: 0 .4rem; opacity: 0; transform: translateY(6px); transition: opacity .6s ease, transform .6s ease; }
+  .timeline-wrap.in-view .tl-label-item { opacity: 1; transform: none; }
+  .tl-tooltip { position: absolute; left: 50%; bottom: calc(100% + 1rem); width: 12.5rem; transform: translateX(-50%) translateY(6px);
+    background: #fff; border: 1px solid rgb(228 228 231); border-radius: .75rem; padding: .8rem 1rem; box-shadow: 0 12px 28px -8px rgba(0,0,0,.18);
+    opacity: 0; visibility: hidden; transition: opacity .2s ease, transform .2s ease; z-index: 30; pointer-events: none; }
+  html.dark .tl-tooltip { background: #1f1315; border-color: rgba(255,255,255,.1); }
+  .tl-item:hover .tl-tooltip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  .tl-item:hover .tl-dot { transform: scale(1.12) !important; }
+  @keyframes tlPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(227,6,19,.5); } 70% { box-shadow: 0 0 0 9px rgba(227,6,19,0); } }
+  .tl-dot.tl-pulse { animation: tlPulse 2.4s ease-out infinite; }
+  .tl-node-m { opacity: 0; transform: translateX(-10px); transition: opacity .6s ease, transform .6s ease; }
+  .timeline-wrap-m.in-view .tl-node-m { opacity: 1; transform: none; }
+  .tl-dot-m { transform: scale(0); transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+  .timeline-wrap-m.in-view .tl-dot-m { transform: scale(1); }
+  @media (prefers-reduced-motion: reduce) { .tl-line-fill { transition: none; width: 100% !important; } .tl-dot, .tl-label-item, .tl-node-m, .tl-dot-m { transition: none; opacity: 1 !important; transform: none !important; } .tl-dot.tl-pulse { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } .reveal { opacity:1; transform:none; } html{scroll-behavior:auto;} .cta-pulse::after { animation: none; } }
+</style>
+</head>
+<body class="font-sans text-zinc-600 dark:text-zinc-400 antialiased overflow-x-hidden">
+
+<div class="grain"></div>
+<div class="h-[3px] bg-accent w-full"></div>
+<header class="sticky top-0 z-50 bg-paper/90 dark:bg-noir/90 backdrop-blur border-b border-zinc-200 dark:border-white/5">
+  <div class="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+    <a href="strona-glowna.html" class="shrink-0">
+      <img src="assets/img/logo-color.png" alt="SF BCC" class="h-9 w-auto dark:hidden">
+      <img src="assets/img/logo-white.png" alt="SF BCC" class="h-9 w-auto hidden dark:block">
+    </a>
+    <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-zinc-600 dark:text-zinc-500">
+      <a href="strona-glowna.html" class="hover:text-accent transition-colors">Strona główna</a>
+      <a href="o-nas.html" class="hover:text-accent transition-colors">O nas</a>
+      <a href="projekty.html" class="hover:text-accent transition-colors">Projekty</a>
+      <a href="partnerzy.html" class="hover:text-accent transition-colors">Partnerzy</a>
+      <a href="blog.html" class="hover:text-accent transition-colors">Blog</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button id="themeToggle" type="button" class="p-2.5 rounded-full border border-zinc-300 dark:border-white/15 text-ink dark:text-white hover:border-accent hover:text-accent transition-colors" aria-label="Przełącz jasny/ciemny motyw">
+        <svg id="iconSun" class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="iconMoon" class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+      <a href="#aplikuj" class="cta-pulse hidden lg:inline-flex items-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark transition-colors">Aplikuj teraz</a>
+      <button id="menuBtn" class="lg:hidden p-2 -mr-2 text-ink dark:text-white" aria-label="Otwórz menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="lg:hidden"><div><div class="border-t border-zinc-200 dark:border-white/10 px-6 py-4 flex flex-col gap-4 font-medium text-zinc-700 dark:text-zinc-300">
+    <a href="strona-glowna.html" class="hover:text-accent">Strona główna</a>
+    <a href="o-nas.html" class="hover:text-accent">O nas</a>
+    <a href="projekty.html" class="hover:text-accent">Projekty</a>
+    <a href="partnerzy.html" class="hover:text-accent">Partnerzy</a>
+    <a href="blog.html" class="hover:text-accent">Blog</a>
+    <a href="#aplikuj" class="inline-flex justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white">Aplikuj teraz</a>
+  </div></div></div>
+</header>
+
+<!-- HERO -->
+<section class="relative overflow-hidden" style="background: var(--section-bg);">
+  <div class="hero-fade">
+    <img src="assets/img/rekrutacja-banner.png" alt="Mniej gadania, więcej działania - SF BCC" class="w-full h-[420px] md:h-[560px] object-cover object-[center_30%]">
+    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(23,13,13,.4) 0%, rgba(23,13,13,.75) 100%);"></div>
+  </div>
+  <div class="absolute inset-0 flex items-end">
+    <div class="max-w-4xl mx-auto px-6 pb-16 w-full text-center reveal">
+      <span class="inline-block text-sm font-semibold tracking-[0.2em] text-accent uppercase mb-5">Rekrutacja</span>
+      <h1 class="font-display font-black text-5xl md:text-7xl tracking-tight text-white" style="line-height:0.98">Zamiast marzyć,<br>zacznij działać</h1>
+      <p class="mt-7 text-lg text-white/80 leading-relaxed max-w-[52ch] mx-auto">Studenckie Forum Business Centre Club to jedna z największych organizacji w Polsce dla ambitnych i kreatywnych młodych ludzi. Zdobądź pierwsze doświadczenie i twórz projekty biznesowe razem z nami.</p>
+      <div class="mt-9 flex flex-wrap gap-4 justify-center">
+        <a href="#aplikuj" class="cta-pulse inline-flex items-center rounded-full bg-accent px-8 py-4 font-semibold text-white hover:bg-accent-dark transition-colors">Wypełnij formularz</a>
+        <a href="#sciezka" class="inline-flex items-center rounded-full border border-white/30 px-8 py-4 font-semibold text-white hover:border-white hover:bg-white/10 transition-colors">Zobacz ścieżkę kariery</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CO ZYSKUJESZ -->
+<section class="relative py-28 overflow-hidden" style="background: var(--section-bg);">
+  <div class="dot-field w-[460px] h-[460px] -top-6 -left-6 hidden md:block"></div>
+  <div class="dot-field dot-field-br w-[460px] h-[460px] -bottom-6 -right-6 hidden md:block"></div>
+  <div class="ghost-square w-[170px] h-[170px] top-[4%] right-[4%] rotate-12 hidden lg:block"></div>
+  <div class="ghost-square-gray w-[100px] h-[100px] bottom-[6%] left-[3%] -rotate-12 hidden lg:block"></div>
+  <div class="max-w-7xl mx-auto px-6 relative">
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl text-ink dark:text-white tracking-tight mb-14 flex items-center"><span class="brand-chip"></span>Co zyskujesz</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal">
+
+      <div class="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[.03] shadow-sm dark:shadow-none p-7">
+        <div class="w-12 h-12 rounded-2xl bg-accent/10 dark:bg-accent/15 flex items-center justify-center text-accent mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="font-display font-bold text-ink dark:text-white text-lg mb-2">Realne doświadczenie</div>
+        <p class="text-sm text-zinc-500 leading-relaxed">Twórz projekty biznesowe skierowane do dzieci, młodzieży, studentów i przedsiębiorców.</p>
+      </div>
+
+      <div class="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[.03] shadow-sm dark:shadow-none p-7">
+        <div class="w-12 h-12 rounded-2xl bg-accent/10 dark:bg-accent/15 flex items-center justify-center text-accent mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+        </div>
+        <div class="font-display font-bold text-ink dark:text-white text-lg mb-2">Umiejętności menedżerskie</div>
+        <p class="text-sm text-zinc-500 leading-relaxed">Zarządzanie projektami, pozyskiwanie partnerów oraz współpraca z mediami.</p>
+      </div>
+
+      <div class="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[.03] shadow-sm dark:shadow-none p-7">
+        <div class="w-12 h-12 rounded-2xl bg-accent/10 dark:bg-accent/15 flex items-center justify-center text-accent mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="font-display font-bold text-ink dark:text-white text-lg mb-2">Sieć kontaktów</div>
+        <p class="text-sm text-zinc-500 leading-relaxed">14 regionów w całej Polsce, setki absolwentów aktywnych dziś w biznesie.</p>
+      </div>
+
+      <div class="rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[.03] shadow-sm dark:shadow-none p-7">
+        <div class="w-12 h-12 rounded-2xl bg-accent/10 dark:bg-accent/15 flex items-center justify-center text-accent mb-5">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M8.5 14 6 22l6-3 6 3-2.5-8"/></svg>
+        </div>
+        <div class="font-display font-bold text-ink dark:text-white text-lg mb-2">Pierwsza praca</div>
+        <p class="text-sm text-zinc-500 leading-relaxed">Zadbaj o rozwój swojej kariery i zdobądź certyfikat potwierdzający doświadczenie.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ŚCIEŻKA KARIERY -->
+<section id="sciezka" class="relative py-28 overflow-hidden" style="background: radial-gradient(70% 60% at 85% 15%, rgba(227,6,19,.06), transparent 65%), var(--section-bg);">
+  <div class="max-w-7xl mx-auto px-6 relative">
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl text-ink dark:text-white tracking-tight mb-4 flex items-center"><span class="brand-chip"></span>Jak wygląda ścieżka kariery w SF BCC?</h2>
+    <p class="reveal text-zinc-500 max-w-[65ch] mb-20">Szukasz pomysłu na siebie? Chcesz zdobyć pierwsze doświadczenie w zarządzaniu, pozyskiwaniu sponsorów czy marketingu? Aplikuj do jednego z regionów SF BCC i przejdź przez wszystkie szczeble organizacji, tak jak setki osób przed Tobą.</p>
+
+    <!-- Desktop: pozioma linia czasu -->
+    <div id="timelineDesktop" class="timeline-wrap hidden lg:block relative"></div>
+
+    <!-- Mobile/tablet: pionowa linia czasu -->
+    <div id="timelineMobile" class="timeline-wrap-m lg:hidden relative pl-2"></div>
+  </div>
+</section>
+
+<!-- FORMULARZ -->
+<section id="aplikuj" class="relative py-28 overflow-hidden" style="background: var(--section-bg);">
+  <div class="max-w-3xl mx-auto px-6 relative">
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl text-ink dark:text-white tracking-tight mb-4 flex items-center"><span class="brand-chip"></span>Formularz rekrutacyjny</h2>
+    <p class="reveal text-zinc-500 max-w-[55ch] mb-12">Do jakiego regionu chcesz aplikować? Wypełnienie zajmuje około 5 minut.</p>
+
+    <!-- Pasek postępu, pola formularza noszą nazwy zgodne z polami Contact Form 7 z produkcyjnej strony sfbcc.org.pl/rekrutacja, aby dało się je 1:1 podłączyć pod realny formularz w WordPressie -->
+    <div class="reveal flex items-center mb-12" id="stepIndicator">
+      <div class="step-dot current" data-dot="1">1</div>
+      <div class="step-line" data-line="1"></div>
+      <div class="step-dot" data-dot="2">2</div>
+      <div class="step-line" data-line="2"></div>
+      <div class="step-dot" data-dot="3">3</div>
+      <div class="step-line" data-line="3"></div>
+      <div class="step-dot" data-dot="4">4</div>
+    </div>
+
+    <form id="recruitForm" class="reveal rounded-2xl border border-zinc-200 dark:border-white/10 bg-white dark:bg-white/[.03] shadow-sm dark:shadow-none p-8 md:p-10">
+
+      <!-- KROK 1: dane podstawowe -->
+      <div class="form-step active" data-step="1">
+        <h3 class="font-display font-bold text-xl text-ink dark:text-white mb-6">Twoje dane</h3>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="sm:col-span-2">
+            <label class="field-label" for="your-name">Imię i nazwisko</label>
+            <input class="field-input" type="text" id="your-name" name="your-name" required>
+          </div>
+          <div>
+            <label class="field-label" for="email-adress">Adres e-mail</label>
+            <input class="field-input" type="email" id="email-adress" name="email-adress" required>
+          </div>
+          <div>
+            <label class="field-label" for="tel-529">Numer telefonu</label>
+            <input class="field-input" type="tel" id="tel-529" name="tel-529" required>
+          </div>
+          <div>
+            <label class="field-label" for="region">Do jakiego regionu aplikujesz?</label>
+            <select class="field-input" id="region" name="region" required>
+              <option value="">Wybierz region</option>
+              <option>Białystok</option><option>Katowice</option><option>Kielce</option><option>Kraków</option>
+              <option>Lublin</option><option>Łódź</option><option>Olsztyn</option><option>Poznań</option>
+              <option>Radom</option><option>Rzeszów</option><option>Toruń</option><option>Trójmiasto</option>
+              <option>Warszawa</option><option>Wrocław</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="age">Wiek</label>
+            <input class="field-input" type="number" id="age" name="age" min="15" max="99" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- KROK 2: o Tobie -->
+      <div class="form-step" data-step="2">
+        <h3 class="font-display font-bold text-xl text-ink dark:text-white mb-6">O Tobie</h3>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="field-label" for="hear-aboutUs">Skąd się o nas dowiedziałeś/aś?</label>
+            <select class="field-input" id="hear-aboutUs" name="hear-aboutUs">
+              <option value="">Wybierz</option>
+              <option>Facebook</option><option>LinkedIn</option><option>Instagram</option><option>Internet</option>
+              <option>Telewizja</option><option>Radio</option><option>Plakaty</option><option>Ulotki</option>
+              <option>Stand / stoisko promocyjne</option><option>Byłem/łam na wydarzeniu</option><option>Od znajomego</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="direction-study">Kierunek studiów</label>
+            <select class="field-input" id="direction-study" name="direction-study">
+              <option value="">Wybierz</option>
+              <option>Techniczny</option><option>Matematyczny</option><option>Przyrodniczy</option><option>Ekonomiczny</option>
+              <option>Prawny</option><option>Artystyczny</option><option>Humanistyczny</option><option>Biznesowy</option>
+              <option>Sportowy</option><option>Medyczny</option><option>Rolniczy</option><option>Nie jestem studentem</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="field-label" for="reason-aplication">Co skłoniło Cię do złożenia aplikacji właśnie do SF BCC?</label>
+            <textarea class="field-input" id="reason-aplication" name="reason-aplication" rows="3"></textarea>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="field-label" for="what-expect">Czego oczekujesz od SF BCC?</label>
+            <textarea class="field-input" id="what-expect" name="what-expect" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- KROK 3: mocne i słabe strony -->
+      <div class="form-step" data-step="3">
+        <h3 class="font-display font-bold text-xl text-ink dark:text-white mb-6">Poznajmy się lepiej</h3>
+        <div class="grid gap-5">
+          <div>
+            <label class="field-label" for="strong-value">Podaj swoje 3 mocne strony, które chcesz rozwijać</label>
+            <textarea class="field-input" id="strong-value" name="strong-value" rows="3"></textarea>
+          </div>
+          <div>
+            <label class="field-label" for="weak-value">Podaj swoje 3 słabe strony, nad którymi chcesz pracować</label>
+            <textarea class="field-input" id="weak-value" name="weak-value" rows="3"></textarea>
+          </div>
+          <div>
+            <label class="field-label" for="how-motivates">Co motywuje Cię do działania?</label>
+            <textarea class="field-input" id="how-motivates" name="how-motivates" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- KROK 4: CV i zgody -->
+      <div class="form-step" data-step="4">
+        <h3 class="font-display font-bold text-xl text-ink dark:text-white mb-6">CV i zgody</h3>
+        <div class="grid gap-5">
+          <div>
+            <label class="field-label">Załącz swoje CV (pdf, doc, docx, png, jpg, max. 10 MB)</label>
+            <label class="dropzone block" for="cv-file">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-2 text-zinc-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span class="text-sm text-zinc-500" id="cvFileLabel">Przeciągnij plik tutaj lub kliknij, aby wybrać</span>
+              <input type="file" id="cv-file" name="cv-file" class="hidden" accept=".pdf,.doc,.docx,.png,.jpg">
+            </label>
+          </div>
+          <div>
+            <label class="field-label" for="link-fb">Link do Twojego profilu na Facebooku (opcjonalnie)</label>
+            <input class="field-input" type="text" id="link-fb" name="link-fb" placeholder="https://facebook.com/...">
+          </div>
+          <label class="flex items-start gap-3 text-sm text-zinc-500 leading-relaxed">
+            <input type="checkbox" id="acceptance-747" name="acceptance-747" required class="mt-1 w-4 h-4 accent-accent shrink-0">
+            <span>Wyrażam zgodę na przetwarzanie moich danych osobowych zawartych w niniejszym formularzu do realizacji procesu rekrutacji przez Fundację Studenckie Forum Business Centre Club z siedzibą w Warszawie, zgodnie z Rozporządzeniem Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO). Podanie danych jest dobrowolne, przy czym niezbędne do udziału w procesie rekrutacji. Przysługuje mi prawo do wycofania zgody w każdej chwili.</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- NAWIGACJA -->
+      <div class="mt-9 pt-7 border-t border-zinc-200 dark:border-white/10 flex items-center justify-between">
+        <button type="button" id="prevBtn" class="inline-flex items-center gap-2 rounded-full border border-zinc-300 dark:border-white/20 px-6 py-3 text-sm font-semibold text-ink dark:text-white hover:border-accent hover:text-accent transition-colors invisible">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Wstecz
+        </button>
+        <button type="button" id="nextBtn" class="cta-pulse inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white hover:bg-accent-dark transition-colors">
+          Dalej
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button type="submit" id="submitBtn" class="cta-pulse hidden inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-semibold text-white hover:bg-accent-dark transition-colors">
+          Wyślij aplikację
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7Z"/></svg>
+        </button>
+      </div>
+    </form>
+
+    <!-- STAN PO WYSŁANIU -->
+    <div id="successPanel" class="hidden reveal rounded-2xl border border-accent/20 bg-white dark:bg-white/[.03] shadow-sm dark:shadow-none p-10 md:p-14 text-center">
+      <div class="w-16 h-16 rounded-full bg-accent/10 dark:bg-accent/15 text-accent flex items-center justify-center mx-auto mb-6">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="font-display font-bold text-2xl text-ink dark:text-white">Dziękujemy za aplikację!</h3>
+      <p class="mt-3 text-zinc-500 max-w-[46ch] mx-auto">Wkrótce skontaktuje się z Tobą koordynator regionu, do którego aplikowałeś/aś. Trzymamy kciuki!</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-noir text-zinc-500 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
+    <div>
+      <img src="assets/img/logo-white.png" alt="SF BCC" class="h-7 w-auto mb-4">
+      <p class="text-sm leading-relaxed max-w-[30ch]">Fundacja Studenckie Forum Business Centre Club, Plac Trzech Krzyży 18, 00-499 Warszawa.</p>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Nawigacja</div>
+      <ul class="space-y-2 text-sm">
+        <li><a href="strona-glowna.html" class="hover:text-white transition-colors">Strona główna</a></li>
+        <li><a href="o-nas.html" class="hover:text-white transition-colors">O nas</a></li>
+        <li><a href="projekty.html" class="hover:text-white transition-colors">Projekty</a></li>
+        <li><a href="partnerzy.html" class="hover:text-white transition-colors">Partnerzy</a></li>
+        <li><a href="blog.html" class="hover:text-white transition-colors">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Kontakt</div>
+      <ul class="space-y-2 text-sm">
+        <li><a href="tel:795235064" class="hover:text-white transition-colors">795 235 064</a></li>
+        <li><a href="mailto:kontakt@sfbcc.org.pl" class="hover:text-white transition-colors">kontakt@sfbcc.org.pl</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Social media</div>
+      <div class="flex gap-3">
+        <a href="https://www.facebook.com/studenckieForumBusinessCentreClub/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12"/></svg></a>
+        <a href="https://www.instagram.com/sf_bcc/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://www.linkedin.com/company/sfbcc/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5M3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+        <a href="https://www.youtube.com/user/sfbusinesscentreclub" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12s0-3.2-.4-4.7c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.5c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.7c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.5c.9-.2 1.6-.9 1.8-1.8.4-1.5.4-4.7.4-4.7M10 15V9l5.2 3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-xs text-zinc-600">© 2026 Fundacja Studenckie Forum Business Centre Club. Wszelkie prawa zastrzeżone.</div>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  function applyTheme(theme) {
+    root.classList.toggle('dark', theme === 'dark');
+    try { localStorage.setItem('sfbcc-theme', theme); } catch (e) {}
+  }
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem('sfbcc-theme'); } catch (e) {}
+  if (savedTheme) applyTheme(savedTheme);
+  themeToggle.addEventListener('click', () => {
+    applyTheme(root.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) { revealEls.forEach(el => el.classList.add('is-visible')); }
+  else {
+    const io = new IntersectionObserver((entries) => entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('is-visible'), i * 60); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  function enhanceSelect(select) {
+    const wrap = document.createElement('div');
+    wrap.className = 'custom-select-wrap';
+    select.parentNode.insertBefore(wrap, select);
+    wrap.appendChild(select);
+    select.classList.add('custom-select-native');
+    select.tabIndex = -1;
+    select.setAttribute('aria-hidden', 'true');
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'field-input custom-select-trigger';
+    trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('aria-expanded', 'false');
+    const labelSpan = document.createElement('span');
+    trigger.appendChild(labelSpan);
+    trigger.insertAdjacentHTML('beforeend', '<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
+    wrap.appendChild(trigger);
+
+    const list = document.createElement('ul');
+    list.className = 'custom-select-list';
+    list.setAttribute('role', 'listbox');
+    list.hidden = true;
+    wrap.appendChild(list);
+
+    const optionEls = Array.from(select.options).map((opt) => {
+      const li = document.createElement('li');
+      li.className = 'custom-option';
+      li.setAttribute('role', 'option');
+      li.dataset.value = opt.value;
+      li.textContent = opt.textContent;
+      list.appendChild(li);
+      return li;
+    });
+
+    let activeIndex = -1;
+
+    function syncLabel() {
+      const opt = select.options[select.selectedIndex];
+      labelSpan.textContent = opt ? opt.textContent : '';
+      optionEls.forEach(li => li.classList.toggle('is-selected', li.dataset.value === select.value));
+    }
+    syncLabel();
+
+    function highlight() {
+      optionEls.forEach((li, i) => li.classList.toggle('is-active', i === activeIndex));
+      if (optionEls[activeIndex]) optionEls[activeIndex].scrollIntoView({ block: 'nearest' });
+    }
+    function openList() {
+      document.querySelectorAll('.custom-select-list').forEach(l => { l.hidden = true; });
+      document.querySelectorAll('.custom-select-trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
+      list.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      activeIndex = optionEls.findIndex(li => li.dataset.value === select.value);
+      if (activeIndex < 0) activeIndex = 0;
+      highlight();
+    }
+    function closeList() {
+      list.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+    function selectIndex(i) {
+      const li = optionEls[i];
+      if (!li) return;
+      select.value = li.dataset.value;
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+      syncLabel();
+      closeList();
+      trigger.focus();
+    }
+
+    trigger.addEventListener('click', () => { list.hidden ? openList() : closeList(); });
+    trigger.addEventListener('keydown', (e) => {
+      if (['ArrowDown', 'ArrowUp', 'Enter', ' ', 'Escape'].includes(e.key)) e.preventDefault();
+      if (list.hidden) {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') openList();
+        return;
+      }
+      if (e.key === 'ArrowDown') { activeIndex = Math.min(activeIndex + 1, optionEls.length - 1); highlight(); }
+      else if (e.key === 'ArrowUp') { activeIndex = Math.max(activeIndex - 1, 0); highlight(); }
+      else if (e.key === 'Enter' || e.key === ' ') { selectIndex(activeIndex); }
+      else if (e.key === 'Escape') { closeList(); }
+    });
+    optionEls.forEach((li, i) => {
+      li.addEventListener('click', () => selectIndex(i));
+      li.addEventListener('mouseenter', () => { activeIndex = i; highlight(); });
+    });
+    document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) closeList(); });
+  }
+  document.querySelectorAll('select.field-input').forEach(enhanceSelect);
+
+  const careerStages = [
+    { name: 'Aplikant', desc: 'Wypełniasz formularz i przechodzisz proces rekrutacji.' },
+    { name: 'Członek regionu', desc: 'Dołączasz do zespołu projektowego w swoim mieście.' },
+    { name: 'Koordynator', desc: 'Przejmujesz odpowiedzialność za jeden z projektów.' },
+    { name: 'Zarząd Regionu', desc: 'Zarządzasz strategią i zespołem całego regionu.' },
+    { name: 'Menedżer ogólnopolski', desc: 'Koordynujesz projekt na poziomie całej Polski.' },
+    { name: 'Zarząd Fundacji', desc: 'Odpowiadasz za kierunek rozwoju całej organizacji.' },
+    { name: 'Konwent Seniorów', desc: 'Wspierasz kolejne zarządy swoim doświadczeniem.' },
+    { name: 'Rada Fundacji', desc: 'Najwyższy szczebel, strategiczny nadzór nad Fundacją.' },
+  ];
+
+  function stageColor(i) {
+    const op = (0.35 + (i / (careerStages.length - 1)) * 0.65).toFixed(2);
+    return 'rgba(227,6,19,' + op + ')';
+  }
+
+  const timelineDesktop = document.getElementById('timelineDesktop');
+  if (timelineDesktop) {
+    const dotsHtml = careerStages.map((stage, i) => {
+      const color = stageColor(i);
+      const delay = (i * 90) + 'ms';
+      const textColor = i === 0 ? '#fff' : color;
+      return '<div class="tl-item">'
+        + '<button type="button" class="tl-dot' + (i === 0 ? ' tl-pulse' : '') + '" style="border-color:' + color + '; background:' + (i === 0 ? color : 'var(--section-bg)') + '; color:' + textColor + '; transition-delay:' + delay + '" aria-label="' + stage.name + '">' + (i + 1) + '</button>'
+        + '<div class="tl-tooltip"><p class="text-xs text-zinc-500 leading-relaxed">' + stage.desc + '</p></div>'
+        + '</div>';
+    }).join('');
+    const labelsHtml = careerStages.map((stage, i) => {
+      const delay = (i * 90) + 'ms';
+      return '<div class="tl-label-item" style="transition-delay:' + delay + '">'
+        + '<div class="font-display font-bold text-sm text-ink dark:text-white leading-tight">' + stage.name + '</div>'
+        + '</div>';
+    }).join('');
+    timelineDesktop.innerHTML = '<div class="tl-dots-row"><div class="tl-line-bg"></div><div class="tl-line-fill" id="tlLineFill"></div>' + dotsHtml + '</div>'
+      + '<div class="tl-labels-row">' + labelsHtml + '</div>';
+  }
+
+  const timelineMobile = document.getElementById('timelineMobile');
+  if (timelineMobile) {
+    timelineMobile.innerHTML = '<div class="absolute left-[19px] top-1 bottom-1 w-[3px] rounded-full" style="background: rgb(228 228 231);"></div>'
+      + '<div class="absolute left-[19px] top-1 w-[3px] rounded-full" id="tlLineFillMobile" style="height:0; background: linear-gradient(180deg, rgba(227,6,19,.3), #E30613); transition: height 2.2s cubic-bezier(.16,1,.3,1);"></div>'
+      + '<div class="relative space-y-9">' + careerStages.map((stage, i) => {
+        const color = stageColor(i);
+        const delay = (i * 90) + 'ms';
+        return '<div class="tl-node-m flex gap-5 items-start" style="transition-delay:' + delay + '">'
+          + '<div class="tl-dot-m w-10 h-10 rounded-full border-2 flex items-center justify-center shrink-0 font-display font-bold text-sm relative z-10" style="border-color:' + color + '; background: var(--section-bg); color:' + color + '; transition-delay:' + delay + '">' + (i + 1) + '</div>'
+          + '<div class="pt-1.5"><div class="font-display font-bold text-ink dark:text-white">' + stage.name + '</div><p class="text-sm text-zinc-500 mt-1">' + stage.desc + '</p></div>'
+          + '</div>';
+      }).join('') + '</div>';
+  }
+
+  function activateTimeline(el, fillId) {
+    el.classList.add('in-view');
+    const fill = document.getElementById(fillId);
+    if (fill) { requestAnimationFrame(() => { if (fillId === 'tlLineFill') fill.style.width = '88%'; else fill.style.height = '96%'; }); }
+  }
+  if (reduceMotion) {
+    if (timelineDesktop) activateTimeline(timelineDesktop, 'tlLineFill');
+    if (timelineMobile) activateTimeline(timelineMobile, 'tlLineFillMobile');
+  } else {
+    const tlObserver = new IntersectionObserver((entries) => entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const fillId = e.target.id === 'timelineDesktop' ? 'tlLineFill' : 'tlLineFillMobile';
+      activateTimeline(e.target, fillId);
+      tlObserver.unobserve(e.target);
+    }), { threshold: 0.3 });
+    if (timelineDesktop) tlObserver.observe(timelineDesktop);
+    if (timelineMobile) tlObserver.observe(timelineMobile);
+  }
+
+  const totalSteps = 4;
+  let currentStep = 1;
+  const form = document.getElementById('recruitForm');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function renderStep() {
+    document.querySelectorAll('.form-step').forEach(el => el.classList.toggle('active', Number(el.dataset.step) === currentStep));
+    document.querySelectorAll('.step-dot').forEach(dot => {
+      const n = Number(dot.dataset.dot);
+      dot.classList.toggle('done', n < currentStep);
+      dot.classList.toggle('current', n === currentStep);
+      dot.textContent = n < currentStep ? '✓' : n;
+    });
+    document.querySelectorAll('.step-line').forEach(line => {
+      line.classList.toggle('done', Number(line.dataset.line) < currentStep);
+    });
+    prevBtn.classList.toggle('invisible', currentStep === 1);
+    nextBtn.classList.toggle('hidden', currentStep === totalSteps);
+    submitBtn.classList.toggle('hidden', currentStep !== totalSteps);
+  }
+
+  function currentStepValid() {
+    const activeStep = form.querySelector('.form-step.active');
+    const fields = activeStep.querySelectorAll('input, select, textarea');
+    for (const f of fields) { if (!f.checkValidity()) { f.reportValidity(); return false; } }
+    return true;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    if (!currentStepValid()) return;
+    if (currentStep < totalSteps) { currentStep++; renderStep(); window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 100, behavior: reduceMotion ? 'auto' : 'smooth' }); }
+  });
+  prevBtn.addEventListener('click', () => {
+    if (currentStep > 1) { currentStep--; renderStep(); }
+  });
+
+  const cvFile = document.getElementById('cv-file');
+  const cvFileLabel = document.getElementById('cvFileLabel');
+  cvFile.addEventListener('change', () => {
+    cvFileLabel.textContent = cvFile.files.length ? cvFile.files[0].name : 'Przeciągnij plik tutaj lub kliknij, aby wybrać';
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!currentStepValid()) return;
+    form.classList.add('hidden');
+    document.getElementById('stepIndicator').classList.add('hidden');
+    const panel = document.getElementById('successPanel');
+    panel.classList.remove('hidden');
+    panel.classList.add('is-visible');
+  });
+
+  renderStep();
+</script>
+</body>
+</html>

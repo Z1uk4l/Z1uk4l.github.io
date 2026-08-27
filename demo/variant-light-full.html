@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SF BCC - Wariant Light (Biało-Czerwono-Czarny)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { accent: { DEFAULT: '#E30613', dark: '#B8050F' }, noir: '#170D0D', blood: '#3D0A0C', paper: '#FAFAF8', ink: '#1C1C1E' },
+    fontFamily: { display: ['Montserrat', 'sans-serif'], sans: ['Inter', 'sans-serif'] },
+  } } }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background:#FAFAF8; }
+  .reveal { opacity:0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.is-visible { opacity:1; transform:none; }
+  .hero-glow { background: radial-gradient(60% 60% at 50% 30%, rgba(227,6,19,.10), transparent 70%); }
+  .region-row { transition: background-color .3s ease, padding-left .3s ease; border-radius: .75rem; }
+  .region-row:hover, .region-row.active { background-color: rgba(227,6,19,.06); padding-left: 1.5rem; }
+  .region-dot { transition: r .25s ease, fill .25s ease; cursor: pointer; }
+  .region-dot:hover, .region-dot.active { fill: #E30613; r: 10; }
+  .no-scrollbar::-webkit-scrollbar { display:none; }
+  .no-scrollbar { -ms-overflow-style:none; scrollbar-width:none; }
+  .region-scroll { scrollbar-width: thin; scrollbar-color: rgba(227,6,19,.45) rgba(0,0,0,.05); overflow-x: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 24px, black calc(100% - 24px), transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 24px, black calc(100% - 24px), transparent); }
+  .region-scroll::-webkit-scrollbar { width: 5px; }
+  .region-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,.05); border-radius: 999px; }
+  .region-scroll::-webkit-scrollbar-thumb { background: rgba(227,6,19,.45); border-radius: 999px; }
+  .region-pulse { transform-box: fill-box; transform-origin: center; opacity: 0; }
+  .region-pulse.active { animation: sonar 2.4s ease-out infinite; }
+  @keyframes sonar { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(2.6); opacity: 0; } }
+  .word {
+    display:inline-block; opacity:0; transform: translateY(14px);
+    background: linear-gradient(100deg, #1C1C1E 30%, #ff8478 46%, #E30613 50%, #ff8478 54%, #1C1C1E 70%);
+    background-size: 260% 100%; background-position: 200% 0;
+    -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+    animation: wordIn .8s cubic-bezier(.16,1,.3,1) forwards, shimmer 11s ease-in-out infinite;
+  }
+  @keyframes wordIn { to { opacity:1; transform:none; } }
+  @keyframes shimmer { 0%,100% { background-position: 200% 0; } 50% { background-position: -80% 0; } }
+  .brand-chip { display:inline-block; width:.7rem; height:.7rem; background:#E30613; margin-right:.6rem; flex-shrink:0; }
+  .grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .03; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .ghost-square { position: absolute; border: 1.5px solid rgba(227,6,19,.35); pointer-events: none; }
+  .ghost-square-gray { position: absolute; border: 1.5px solid rgba(161,161,170,.55); pointer-events: none; }
+  .ghost-square-dark { position: absolute; border: 1.5px solid rgba(63,63,70,.4); pointer-events: none; }
+  .cta-pulse { position: relative; }
+  .cta-pulse::after { content:''; position:absolute; inset:0; border-radius:inherit; box-shadow: 0 0 0 0 rgba(227,6,19,.55); animation: ctaPulse 2.6s ease-out infinite; pointer-events:none; }
+  @keyframes ctaPulse { 0% { box-shadow: 0 0 0 0 rgba(227,6,19,.55); } 70% { box-shadow: 0 0 0 14px rgba(227,6,19,0); } 100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); } }
+  .dot-grid { background-image: radial-gradient(rgba(255,255,255,.1) 1px, transparent 1px); background-size: 22px 22px; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity:1; transform:none; transition:none; } html{scroll-behavior:auto;} .word { animation:none; opacity:1; transform:none; background-position: 0 0; } .cta-pulse::after { animation: none; } }
+</style>
+</head>
+<body class="font-sans text-zinc-600 antialiased overflow-x-hidden">
+
+<div class="grain"></div>
+<div class="h-[3px] bg-accent w-full"></div>
+<header class="sticky top-0 z-50 bg-paper/90 backdrop-blur border-b border-zinc-200">
+  <div class="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+    <img src="assets/img/logo-color.png" alt="SF BCC" class="h-8 w-auto">
+    <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-zinc-600">
+      <a href="#" class="hover:text-accent transition-colors">Strona główna</a>
+      <a href="#" class="hover:text-accent transition-colors">O nas</a>
+      <a href="#" class="hover:text-accent transition-colors">Projekty</a>
+      <a href="#" class="hover:text-accent transition-colors">Partnerzy</a>
+      <a href="#" class="hover:text-accent transition-colors">Blog</a>
+    </nav>
+    <a href="#rekrutacja" class="cta-pulse hidden lg:inline-flex items-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark transition-colors">Rekrutacja</a>
+    <button id="menuBtn" class="lg:hidden p-2 -mr-2 text-ink" aria-label="Otwórz menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-zinc-200 px-6 py-4 flex flex-col gap-4 font-medium text-zinc-700">
+    <a href="#" class="hover:text-accent">Strona główna</a>
+    <a href="#" class="hover:text-accent">O nas</a>
+    <a href="#" class="hover:text-accent">Projekty</a>
+    <a href="#" class="hover:text-accent">Partnerzy</a>
+    <a href="#" class="hover:text-accent">Blog</a>
+    <a href="#rekrutacja" class="inline-flex justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white">Rekrutacja</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative hero-glow overflow-hidden">
+  <svg viewBox="-0.952 -0.458 480 446" class="absolute top-1/2 left-1/2 w-[900px] h-auto -translate-x-1/2 -translate-y-1/2 opacity-[.09] pointer-events-none hidden md:block" aria-hidden="true">
+    <path d="m477.96 312.11c-9.377-6.699-4.348-19.511-8.707-28.711-2.997-6.479-9.618-12.428-13.28-19.013-2.551-4.64-5.347-19.664-6.35-25.156 0.152-1.051 0.301-2.085 0.052-2.837-1-3.005-4.858-8.195-4.794-11.391 0.502-3.482 2.095-6.832 2.857-9.924 0.555-3.837 0.563-8.825 0.416-12.762-0.653-12.583-9.628-12.087-19.503-15.301l2.971-13.469 23.774-18.66 1.763-5.095-5.895-37.907-6.655-8.458-13.938-29.091-1.841-12.037-0.442-16.805-2.093-5.29-22.008-12.798-8.125-0.46-8.288 5.569-9.379 3.279-47.683 4.172-46.382-2.061-20.857-3.727c-3.976 5.488-11.395 12.253-18.318 13.399l-1.9-1.703c0.25-1.735 1.159-5.542 2.058-6.823 3.665-5.537 9.939-9.62 14.201-14.354 0.85-0.95 1.708-1.898 2.269-3.587-5.22-0.753-19.072 18.622-30.367 18.064-3.851-0.557-7.557-2.164-11.379-2.715-1.051-0.151-2.203 0.399-3.254 0.247-1.309-0.549-5.055-2.14-5.968-2.989-4.216-2.758-13.39-15.83-6.81-19.513 7.025-4.335 15.995 10.14 20.365 9.337l0.846-0.928c-0.45-4.003-8.463-8.002-11.628-10.604-0.599-0.785-1.204-1.589-1.852-2.037-0.604-0.805-7.42-5.349-8.068-5.798-4.361-2.062-16.453-4.524-20.908-3.377-12.117 2.527-27.236 6.052-38.923 10.407-3.438 1.654-12.168 7.871-15.38 10.268-1.604 1.18-2.587 3.188-4.144 4.035-4.638 2.535-10.832 3.431-15.519 6.309-5.395 2.781-9.933 7.12-15.38 10.268-4.637 2.531-9.93 4.611-14.823 6.41-4.083 1.183-8.395 1.276-12.185 2.875-5.638 2.03-21.796 7.891-26.11 10.491-3.132 2.031-6.049 12.309-8.938 15.09-0.799 0.601-2.505-0.005-2.9 0.298-0.739 0.25-1.286 1.603-1.689 1.901-0.553 1.336-1.656 4.038-1.807 5.089-0.302 4.589 2.986 6.474 0.087 11.765-7.686-3.606-3.465-10.491-15.753-11.909l-0.655 4.539 4.02 26.604 1.078 7.276-4.2 14.363c-2.958 3.134-8.102 4.18-9.11 8.668-0.151 1.051 0.454 1.854 0.657 2.938 0.142 1.454-0.404 2.804-0.263 4.257 1.154 4.438 20.838 13.683 21.728 19.877 1.479 6.991-4.216 14.361-3.074 21.304 0.597 3.295 5.967 5.493 7.02 8.133 0.999 3.011-3.797 6.572 0.49 8.976l-7.612 23.136 5.713 12.244-1.61 6.167 10.976 10.508 1.111 21.898-8.963 20.076 7.074 0.327 2.313-8.6 9.831-1.42 2.52 12.135 5.382 7.177 38.003 10.837 8.58-2.683 3.629 6.952-9.183 9.363-1.452 5.125 7.471 2.504 12.902 16.84 5.404 2.204 4.428-6.14 6.615-3.677 0.453-3.144-7.515-5.015 2.865-4.922 13.336 3.7 8.314 6.905 10.081 3.959 9.17-4.03 1.095 7.278-4.615 4.688 8.626 9.429 6.065 2.315 6.881-3.277 8.564 7.293 15.187 1.118 0.311 5.029 2.994 8.986 9.826 8.555 2.806 7.526 4.062 4.145 0.144 6.439 9.974-2.473 2.763-9.227 10.944-6.633 9.025 13.786 8.111 3.314 2.096 5.278-0.248 8.887 11.328 0.571 7.99-10.978 7.77-4.232 8.674 1.612 10.13-3.515 10.44 6.482 7.119-7.165 23.919-2.947 18.501 5.149 6.205 11.602 25.067 8.964 14.197 2.743 2.345-3.576-8.207-7.592 0.851-8.088-3.996-21.955 1.767-7.232 45.472-63.28 10.135-3.531 4.513-3.98 1.959-6.144 0.25-6.73z"
+          fill="none" stroke="#E30613" stroke-width="2"/>
+  </svg>
+  <div class="ghost-square w-[200px] h-[200px] top-[10%] left-[6%] rotate-12 hidden lg:block"></div>
+  <div class="ghost-square w-[120px] h-[120px] bottom-[8%] right-[8%] -rotate-6 hidden lg:block"></div>
+  <div class="ghost-square-gray w-[70px] h-[70px] top-[6%] right-[4%] rotate-45 hidden xl:block"></div>
+  <div class="max-w-4xl mx-auto px-6 pt-28 pb-24 text-center relative">
+    <span class="reveal inline-block text-xs font-semibold tracking-[0.2em] text-accent uppercase mb-8">Od 2001 roku</span>
+    <h1 class="reveal font-display font-black text-5xl md:text-7xl tracking-tight text-ink leading-[1.1]">
+      <span class="word" style="animation-delay:.1s">Wspieramy</span> <span class="word" style="animation-delay:.2s">rozwój</span> <span class="word" style="animation-delay:.3s">przedsiębiorczości</span> <span class="word" style="animation-delay:.4s">wśród</span> <span class="word" style="animation-delay:.5s">Polaków</span>
+    </h1>
+    <p class="reveal mt-8 text-lg text-zinc-500 leading-relaxed max-w-[44ch] mx-auto">
+      Realizowane przez nas konferencje, spotkania i warsztaty udowadniają, że aktywność i własna inicjatywa mogą stać się życiową drogą.
+    </p>
+    <div class="reveal mt-10 flex flex-wrap gap-4 justify-center">
+      <a href="#rekrutacja" class="cta-pulse inline-flex items-center rounded-full bg-accent px-8 py-4 font-semibold text-white hover:bg-accent-dark transition-colors">Rekrutacja</a>
+      <a href="#" class="inline-flex items-center rounded-full border border-zinc-300 px-8 py-4 font-semibold text-ink hover:border-accent hover:text-accent transition-colors">O nas</a>
+    </div>
+  </div>
+</section>
+
+<!-- WIELKA LICZBA + ZDJĘCIE PEŁNOSZEROKIE -->
+<section class="relative border-t border-zinc-200 py-20 overflow-hidden">
+  <div class="ghost-square w-[340px] h-[340px] top-[-60px] right-[8%] rotate-12 hidden md:block"></div>
+  <div class="ghost-square w-[140px] h-[140px] top-[120px] right-[22%] -rotate-6 hidden lg:block"></div>
+  <div class="ghost-square-gray w-[80px] h-[80px] top-[-30px] left-[4%] -rotate-12 hidden lg:block"></div>
+  <div class="max-w-7xl mx-auto px-6 reveal relative">
+    <div class="font-display font-black text-[6rem] md:text-[8rem] leading-none text-ink"><span id="counterYears">0</span> <span class="text-accent">lat</span></div>
+    <p class="text-lg text-zinc-500 mt-2 max-w-[40ch]">nieprzerwanej działalności w całej Polsce, w 14 aktywnych regionach.</p>
+  </div>
+  <div class="reveal mt-12 w-full">
+    <img src="assets/img/hero-main.jpg" alt="Wydarzenie SF BCC" class="w-full h-[380px] md:h-[560px] object-cover object-[center_22%]">
+  </div>
+</section>
+
+<!-- REGIONY: mapa + lista edytorialska -->
+<section class="relative border-t border-zinc-200 py-28 overflow-hidden" style="background: radial-gradient(70% 60% at 80% 20%, rgba(227,6,19,.06), transparent 65%), #FAFAF8;">
+  <div class="ghost-square w-[180px] h-[180px] top-[6%] right-[4%] rotate-12 hidden lg:block"></div>
+  <div class="ghost-square-gray w-[110px] h-[110px] bottom-[10%] left-[3%] -rotate-12 hidden lg:block"></div>
+  <div class="ghost-square-dark w-[70px] h-[70px] bottom-[3%] right-[2%] rotate-45 hidden xl:block"></div>
+  <div class="max-w-7xl mx-auto px-6 relative">
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl text-ink tracking-tight mb-4 flex items-center"><span class="brand-chip"></span>Gdzie nas znajdziesz</h2>
+    <p class="reveal text-zinc-500 max-w-[50ch] mb-14">14 aktywnych regionów w całej Polsce. Najedź na punkt na mapie albo na wiersz listy.</p>
+
+    <div class="grid lg:grid-cols-5 gap-12 items-center">
+      <div class="lg:col-span-2 reveal">
+        <svg viewBox="-0.952 -0.458 480 446" class="w-full h-auto max-w-md mx-auto">
+          <defs>
+            <filter id="mapGlow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <path d="m477.96 312.11c-9.377-6.699-4.348-19.511-8.707-28.711-2.997-6.479-9.618-12.428-13.28-19.013-2.551-4.64-5.347-19.664-6.35-25.156 0.152-1.051 0.301-2.085 0.052-2.837-1-3.005-4.858-8.195-4.794-11.391 0.502-3.482 2.095-6.832 2.857-9.924 0.555-3.837 0.563-8.825 0.416-12.762-0.653-12.583-9.628-12.087-19.503-15.301l2.971-13.469 23.774-18.66 1.763-5.095-5.895-37.907-6.655-8.458-13.938-29.091-1.841-12.037-0.442-16.805-2.093-5.29-22.008-12.798-8.125-0.46-8.288 5.569-9.379 3.279-47.683 4.172-46.382-2.061-20.857-3.727c-3.976 5.488-11.395 12.253-18.318 13.399l-1.9-1.703c0.25-1.735 1.159-5.542 2.058-6.823 3.665-5.537 9.939-9.62 14.201-14.354 0.85-0.95 1.708-1.898 2.269-3.587-5.22-0.753-19.072 18.622-30.367 18.064-3.851-0.557-7.557-2.164-11.379-2.715-1.051-0.151-2.203 0.399-3.254 0.247-1.309-0.549-5.055-2.14-5.968-2.989-4.216-2.758-13.39-15.83-6.81-19.513 7.025-4.335 15.995 10.14 20.365 9.337l0.846-0.928c-0.45-4.003-8.463-8.002-11.628-10.604-0.599-0.785-1.204-1.589-1.852-2.037-0.604-0.805-7.42-5.349-8.068-5.798-4.361-2.062-16.453-4.524-20.908-3.377-12.117 2.527-27.236 6.052-38.923 10.407-3.438 1.654-12.168 7.871-15.38 10.268-1.604 1.18-2.587 3.188-4.144 4.035-4.638 2.535-10.832 3.431-15.519 6.309-5.395 2.781-9.933 7.12-15.38 10.268-4.637 2.531-9.93 4.611-14.823 6.41-4.083 1.183-8.395 1.276-12.185 2.875-5.638 2.03-21.796 7.891-26.11 10.491-3.132 2.031-6.049 12.309-8.938 15.09-0.799 0.601-2.505-0.005-2.9 0.298-0.739 0.25-1.286 1.603-1.689 1.901-0.553 1.336-1.656 4.038-1.807 5.089-0.302 4.589 2.986 6.474 0.087 11.765-7.686-3.606-3.465-10.491-15.753-11.909l-0.655 4.539 4.02 26.604 1.078 7.276-4.2 14.363c-2.958 3.134-8.102 4.18-9.11 8.668-0.151 1.051 0.454 1.854 0.657 2.938 0.142 1.454-0.404 2.804-0.263 4.257 1.154 4.438 20.838 13.683 21.728 19.877 1.479 6.991-4.216 14.361-3.074 21.304 0.597 3.295 5.967 5.493 7.02 8.133 0.999 3.011-3.797 6.572 0.49 8.976l-7.612 23.136 5.713 12.244-1.61 6.167 10.976 10.508 1.111 21.898-8.963 20.076 7.074 0.327 2.313-8.6 9.831-1.42 2.52 12.135 5.382 7.177 38.003 10.837 8.58-2.683 3.629 6.952-9.183 9.363-1.452 5.125 7.471 2.504 12.902 16.84 5.404 2.204 4.428-6.14 6.615-3.677 0.453-3.144-7.515-5.015 2.865-4.922 13.336 3.7 8.314 6.905 10.081 3.959 9.17-4.03 1.095 7.278-4.615 4.688 8.626 9.429 6.065 2.315 6.881-3.277 8.564 7.293 15.187 1.118 0.311 5.029 2.994 8.986 9.826 8.555 2.806 7.526 4.062 4.145 0.144 6.439 9.974-2.473 2.763-9.227 10.944-6.633 9.025 13.786 8.111 3.314 2.096 5.278-0.248 8.887 11.328 0.571 7.99-10.978 7.77-4.232 8.674 1.612 10.13-3.515 10.44 6.482 7.119-7.165 23.919-2.947 18.501 5.149 6.205 11.602 25.067 8.964 14.197 2.743 2.345-3.576-8.207-7.592 0.851-8.088-3.996-21.955 1.767-7.232 45.472-63.28 10.135-3.531 4.513-3.98 1.959-6.144 0.25-6.73z"
+                fill="rgba(227,6,19,.05)" stroke="#E30613" stroke-width="2.5" filter="url(#mapGlow)" opacity="0.9"/>
+          <g id="regionDots" class="font-sans">
+            <circle data-region="bialystok" class="region-dot" cx="407" cy="156" r="7" fill="#5C4245"/>
+            <circle data-region="warszawa" class="region-dot" cx="277" cy="200" r="7" fill="#5C4245"/>
+            <circle data-region="lublin"   class="region-dot" cx="325" cy="276" r="7" fill="#5C4245"/>
+            <circle data-region="kielce"   class="region-dot" cx="249" cy="290" r="7" fill="#5C4245"/>
+            <circle data-region="katowice" class="region-dot" cx="182" cy="347" r="7" fill="#5C4245"/>
+            <circle data-region="krakow" class="region-dot" cx="230" cy="355" r="7" fill="#5C4245"/>
+            <circle data-region="lodz" class="region-dot" cx="230" cy="230" r="7" fill="#5C4245"/>
+            <circle data-region="olsztyn" class="region-dot" cx="300" cy="110" r="7" fill="#5C4245"/>
+            <circle data-region="trojmiasto" class="region-dot" cx="270" cy="55" r="7" fill="#5C4245"/>
+            <circle data-region="poznan" class="region-dot" cx="140" cy="170" r="7" fill="#5C4245"/>
+            <circle data-region="radom" class="region-dot" cx="270" cy="235" r="7" fill="#5C4245"/>
+            <circle data-region="rzeszow" class="region-dot" cx="355" cy="300" r="7" fill="#5C4245"/>
+            <circle data-region="torun" class="region-dot" cx="220" cy="140" r="7" fill="#5C4245"/>
+            <circle data-region="wroclaw" class="region-dot" cx="120" cy="300" r="7" fill="#5C4245"/>
+          </g>
+          <circle id="pulseRing" class="region-pulse" cx="0" cy="0" r="7" fill="none" stroke="#E30613" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="lg:col-span-3 reveal">
+        <div class="region-scroll max-h-[420px] overflow-y-auto pr-3">
+        <a href="mailto:bialystok@sfbcc.org.pl" data-region="bialystok" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">01</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Białystok</div>
+              <div class="text-sm text-zinc-500">Rafał Nowik</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">bialystok@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:katowice@sfbcc.org.pl" data-region="katowice" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">02</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Katowice</div>
+              <div class="text-sm text-zinc-500">Jakub Baran</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">katowice@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:a.depa@sfbcc.org.pl" data-region="lublin" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">03</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Lublin</div>
+              <div class="text-sm text-zinc-500">Zgłoś swoją kandydaturę</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">a.depa@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:kielce@sfbcc.org.pl" data-region="kielce" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">04</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Kielce</div>
+              <div class="text-sm text-zinc-500">Nikodem Gos</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">kielce@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:warszawa@sfbcc.org.pl" data-region="warszawa" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">05</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Warszawa</div>
+              <div class="text-sm text-zinc-500">Maciej Adamski</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">warszawa@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:krakow@sfbcc.org.pl" data-region="krakow" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">06</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Kraków</div>
+              <div class="text-sm text-zinc-500">Kacper Matłosz</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">krakow@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:lodz@sfbcc.org.pl" data-region="lodz" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">07</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Łódź</div>
+              <div class="text-sm text-zinc-500">Michał Dróżka</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">lodz@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:olsztyn@sfbcc.org.pl" data-region="olsztyn" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">08</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Olsztyn</div>
+              <div class="text-sm text-zinc-500">Piotr Wąsowicz</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">olsztyn@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:trojmiasto@sfbcc.org.pl" data-region="trojmiasto" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">09</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Trójmiasto</div>
+              <div class="text-sm text-zinc-500">Mikołaj Wargowski</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">trojmiasto@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:poznan@sfbcc.org.pl" data-region="poznan" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">10</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Poznań</div>
+              <div class="text-sm text-zinc-500">Kolet Chudy</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">poznan@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:radom@sfbcc.org.pl" data-region="radom" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">11</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Radom</div>
+              <div class="text-sm text-zinc-500">Julia Gregorczyk</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">radom@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:rzeszow@sfbcc.org.pl" data-region="rzeszow" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">12</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Rzeszów</div>
+              <div class="text-sm text-zinc-500">Alicja Grążka</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">rzeszow@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:torun@sfbcc.org.pl" data-region="torun" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">13</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Toruń</div>
+              <div class="text-sm text-zinc-500">Kacper Sątowski</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">torun@sfbcc.org.pl</span>
+        </a>
+        <a href="mailto:wroclaw@sfbcc.org.pl" data-region="wroclaw" class="region-row flex items-center justify-between py-5 px-4 rounded-xl group">
+          <div class="flex items-center gap-6">
+            <span class="font-display font-black text-accent text-xl w-8">14</span>
+            <div>
+              <div class="font-display font-bold text-ink text-xl">Wrocław</div>
+              <div class="text-sm text-zinc-500">Klaudia Anioł</div>
+            </div>
+          </div>
+          <span class="text-sm text-zinc-500 group-hover:text-accent transition-colors hidden sm:block">wroclaw@sfbcc.org.pl</span>
+        </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAS: PARTNERSTWA -->
+<section class="relative overflow-hidden reveal">
+  <img src="assets/img/partners-handshake.jpg" alt="Partnerstwa i współpraca biznesowa SF BCC" class="w-full h-[280px] md:h-[360px] object-cover">
+  <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(23,13,13,.92) 0%, rgba(61,10,12,.55) 55%, rgba(23,13,13,.35) 100%);"></div>
+  <div class="absolute inset-0 flex items-center">
+    <div class="max-w-7xl mx-auto px-6 w-full">
+      <p class="font-display font-bold text-2xl md:text-4xl text-white max-w-[18ch] leading-tight">Budujemy relacje, które procentują przez lata</p>
+    </div>
+  </div>
+</section>
+
+<!-- KALENDARZ TEASER -->
+<section class="relative border-t border-zinc-200 py-28 overflow-hidden">
+  <div class="ghost-square w-[220px] h-[220px] top-[10%] left-[-40px] -rotate-6 hidden md:block"></div>
+  <div class="ghost-square-dark w-[130px] h-[130px] bottom-[6%] right-[6%] rotate-12 hidden lg:block"></div>
+  <div class="ghost-square-gray w-[90px] h-[90px] top-[4%] right-[-30px] -rotate-12 hidden xl:block"></div>
+  <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-14 items-center relative">
+    <div class="reveal">
+      <h2 class="font-display font-bold text-4xl md:text-5xl text-ink tracking-tight flex items-center"><span class="brand-chip"></span>Kalendarz wydarzeń</h2>
+      <p class="mt-4 text-zinc-500 leading-relaxed max-w-[46ch]">Wyszukaj nasze eventy w swoim mieście: konferencje, warsztaty i szkolenia organizowane przez wszystkie regiony SF BCC.</p>
+      <a href="#" class="mt-8 inline-flex items-center rounded-full bg-ink px-7 py-3.5 font-semibold text-white hover:bg-zinc-800 transition-colors">Zobacz pełny kalendarz</a>
+    </div>
+    <div class="reveal">
+      <div class="rounded-2xl border border-accent/20 bg-white shadow-sm p-6">
+        <div class="flex items-center justify-between mb-4">
+          <span class="font-display font-bold text-ink">Sierpień 2026</span>
+          <div class="flex gap-2">
+            <button class="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500">‹</button>
+            <button class="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center text-zinc-500">›</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-xs text-zinc-400 mb-2">
+          <span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>So</span><span>Nd</span>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-sm" id="miniCalendar"></div>
+        <p class="text-xs text-zinc-400 mt-4">Podgląd wizualny, pełny kalendarz z realnymi wydarzeniami wyświetla się pod przyciskiem obok.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 mt-16 relative reveal">
+    <div class="text-xs font-semibold tracking-[0.15em] text-zinc-400 uppercase mb-5">Nadchodzące wydarzenia, przykładowo</div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <a href="https://festiwalboss.pl/" target="_blank" rel="noopener" class="flex items-center gap-4 rounded-2xl border p-5 transition-transform hover:-translate-y-1"
+         style="background: linear-gradient(135deg, rgba(59,130,246,.10), transparent 70%), #EFF6FF; border-color: rgba(59,130,246,.3);">
+        <img src="assets/img/logo-boss-crop.png" alt="Festiwal BOSS" class="w-14 h-14 object-contain shrink-0">
+        <div class="min-w-0">
+          <div class="font-display font-bold text-ink truncate">20. Festiwal BOSS, finał w Warszawie</div>
+          <div class="text-sm mt-0.5" style="color:#2563EB;">21-22 kwietnia 2026</div>
+        </div>
+      </a>
+      <a href="https://inteligencjafinansowa.org.pl/" target="_blank" rel="noopener" class="flex items-center gap-4 rounded-2xl border p-5 transition-transform hover:-translate-y-1"
+         style="background: linear-gradient(135deg, rgba(217,70,239,.10), transparent 70%), #FDF4FF; border-color: rgba(217,70,239,.3);">
+        <div class="w-14 h-14 rounded-xl flex items-center justify-center shrink-0" style="background:#C026D3;">
+          <img src="assets/img/logo-if-icon.png" alt="Inteligencja Finansowa" class="w-9 h-9 object-contain">
+        </div>
+        <div class="min-w-0">
+          <div class="font-display font-bold text-ink truncate">Konferencja Inteligencja Finansowa</div>
+          <div class="text-sm mt-0.5" style="color:#C026D3;">13 maja 2026, Wrocław</div>
+        </div>
+      </a>
+      <div class="flex items-center gap-4 rounded-2xl border border-zinc-200 bg-white shadow-sm p-5">
+        <span class="w-2 h-2 rounded-full shrink-0 bg-accent"></span>
+        <div class="min-w-0">
+          <div class="font-display font-bold text-ink truncate">Warsztat: Zarządzanie projektem od A do Z</div>
+          <div class="text-sm text-zinc-500">Region Warszawa</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 rounded-2xl border border-zinc-200 bg-white shadow-sm p-5">
+        <span class="w-2 h-2 rounded-full shrink-0 bg-accent"></span>
+        <div class="min-w-0">
+          <div class="font-display font-bold text-ink truncate">Spotkanie networkingowe regionu Kraków</div>
+          <div class="text-sm text-zinc-500">Region Kraków</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REKOMENDACJE -->
+<section class="relative border-t border-zinc-200 py-28 overflow-hidden" style="background: radial-gradient(60% 50% at 10% 90%, rgba(227,6,19,.05), transparent 65%), #FAFAF8;">
+  <div class="ghost-square w-[160px] h-[160px] bottom-[4%] left-[4%] -rotate-6 hidden lg:block"></div>
+  <div class="ghost-square-gray w-[100px] h-[100px] top-[8%] right-[10%] rotate-12 hidden lg:block"></div>
+  <div class="ghost-square-dark w-[60px] h-[60px] bottom-[2%] right-[-20px] -rotate-45 hidden xl:block"></div>
+  <div class="ghost-square w-[110px] h-[110px] top-[35%] left-[-45px] rotate-12 hidden xl:block"></div>
+  <div class="ghost-square-dark w-[85px] h-[85px] top-[65%] right-[-35px] -rotate-12 hidden xl:block"></div>
+  <div class="ghost-square-gray w-[65px] h-[65px] bottom-[3%] left-[9%] rotate-45 hidden lg:block"></div>
+  <div class="max-w-7xl mx-auto px-6 relative">
+    <h2 class="reveal font-display font-bold text-4xl md:text-5xl text-ink tracking-tight mb-12 flex items-center"><span class="brand-chip"></span>Co mówią o nas inni</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-20 pt-24 reveal">
+
+      <div class="relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full overflow-hidden z-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),0_0_45px_8px_rgba(227,6,19,.25),0_0_15px_2px_rgba(227,6,19,.4)]">
+          <img src="assets/img/t-grzesiak.jpg" alt="dr Mateusz Grzesiak" class="w-full h-full object-cover object-[center_22%]">
+        </div>
+        <figure class="relative z-10 mt-44 bg-white shadow-md border border-zinc-200 rounded-2xl pt-8 pb-8 px-6 text-center">
+          <blockquote class="text-zinc-600 leading-relaxed">"Fundacja SF BCC to organizacja, w której osoby pracują z pasją. Promują dobre rozwiązania biznesowe, kształtując myślenie młodych Polaków."</blockquote>
+          <figcaption class="mt-5"><span class="font-display font-bold text-ink text-lg">dr Mateusz Grzesiak</span><br><span class="text-zinc-500 text-sm">Psycholog, wykładowca akademicki</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full overflow-hidden z-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),0_0_45px_8px_rgba(227,6,19,.25),0_0_15px_2px_rgba(227,6,19,.4)]">
+          <img src="assets/img/t-zuk.jpg" alt="Dariusz Żuk" class="w-full h-full object-cover object-[center_22%]">
+        </div>
+        <figure class="relative z-10 mt-44 bg-white shadow-md border border-zinc-200 rounded-2xl pt-8 pb-8 px-6 text-center">
+          <blockquote class="text-zinc-600 leading-relaxed">"Ideą Studenckiego Forum BCC od początku było kreowanie przedsiębiorczego pokolenia Polaków, widzę jak ta wizja staje się rzeczywistością."</blockquote>
+          <figcaption class="mt-5"><span class="font-display font-bold text-ink text-lg">Dariusz Żuk</span><br><span class="text-zinc-500 text-sm">twórca SF BCC, AIP, bValue</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full overflow-hidden z-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),0_0_45px_8px_rgba(227,6,19,.25),0_0_15px_2px_rgba(227,6,19,.4)]">
+          <img src="assets/img/t-goliszewski.jpg" alt="Marek Goliszewski" class="w-full h-full object-cover object-[center_22%]">
+        </div>
+        <figure class="relative z-10 mt-44 bg-white shadow-md border border-zinc-200 rounded-2xl pt-8 pb-8 px-6 text-center">
+          <blockquote class="text-zinc-600 leading-relaxed">"SF BCC to organizacja, która buduje kolejne, świadome biznesu pokolenia. Cieszę się, że mogę być świadkiem rozwoju polskiej przedsiębiorczości."</blockquote>
+          <figcaption class="mt-5"><span class="font-display font-bold text-ink text-lg">Marek Goliszewski</span><br><span class="text-zinc-500 text-sm">Prezes Business Centre Club</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full overflow-hidden z-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),0_0_45px_8px_rgba(227,6,19,.25),0_0_15px_2px_rgba(227,6,19,.4)]">
+          <img src="assets/img/t-osman.png" alt="Marcin Osman" class="w-full h-full object-cover object-[center_22%]">
+        </div>
+        <figure class="relative z-10 mt-44 bg-white shadow-md border border-zinc-200 rounded-2xl pt-8 pb-8 px-6 text-center">
+          <blockquote class="text-zinc-600 leading-relaxed">"SF BCC daje okazję do zdobycia wartościowego doświadczenia i stwarza realne szanse na odnalezienie się na rynku pracy."</blockquote>
+          <figcaption class="mt-5"><span class="font-display font-bold text-ink text-lg">Marcin Osman</span><br><span class="text-zinc-500 text-sm">Przedsiębiorca, autor książek</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full overflow-hidden z-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),0_0_45px_8px_rgba(227,6,19,.25),0_0_15px_2px_rgba(227,6,19,.4)]">
+          <img src="assets/img/t-kaniuk.jpg" alt="Lech Kaniuk" class="w-full h-full object-cover object-[center_22%]">
+        </div>
+        <figure class="relative z-10 mt-44 bg-white shadow-md border border-zinc-200 rounded-2xl pt-8 pb-8 px-6 text-center">
+          <blockquote class="text-zinc-600 leading-relaxed">"SF BCC robi bardzo ważną i wartościową robotę. Inspiruje, edukuje i akceleruje sieć kontaktów dla uczestników i tych, którzy wspierają Fundację."</blockquote>
+          <figcaption class="mt-5"><span class="font-display font-bold text-ink text-lg">Lech Kaniuk</span><br><span class="text-zinc-500 text-sm">CEO, SunRoof International</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="relative">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full overflow-hidden z-0 shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),0_0_45px_8px_rgba(227,6,19,.25),0_0_15px_2px_rgba(227,6,19,.4)]">
+          <img src="assets/img/t-wilmanowicz.jpg" alt="Ewa Wilmanowicz" class="w-full h-full object-cover object-[center_22%]">
+        </div>
+        <figure class="relative z-10 mt-44 bg-white shadow-md border border-zinc-200 rounded-2xl pt-8 pb-8 px-6 text-center">
+          <blockquote class="text-zinc-600 leading-relaxed">"SF Business Centre Club to profesjonalna organizacja, która swoimi standardami dorównuje organizacjom biznesowym."</blockquote>
+          <figcaption class="mt-5"><span class="font-display font-bold text-ink text-lg">Ewa Wilmanowicz</span><br><span class="text-zinc-500 text-sm">Wykładowca, ekspert ds. reputacji</span></figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA REKRUTACJA: blok koloru "więcej czerwieni w tle" -->
+<section id="rekrutacja" class="relative bg-blood py-24 overflow-hidden dot-grid">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(60% 60% at 15% 90%, rgba(0,0,0,.35), transparent 70%);"></div>
+  <div class="absolute w-[300px] h-[300px] border-[1.5px] border-white/10 -bottom-24 -left-16 rotate-12 hidden md:block"></div>
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <div class="grid lg:grid-cols-5 gap-14 items-center">
+      <div class="lg:col-span-3 reveal">
+        <h2 class="font-display font-extrabold text-3xl md:text-5xl text-white tracking-tight leading-[1.15]">Zamiast marzyć,<br>zacznij działać</h2>
+        <p class="mt-5 text-white/70 max-w-[46ch] leading-relaxed">Dołącz do jednego z 14 regionów SF BCC i zdobądź pierwsze doświadczenie w zarządzaniu projektami, pozyskiwaniu partnerów i pracy z mediami.</p>
+        <div class="mt-9 flex flex-wrap items-center gap-4">
+          <a href="#" class="cta-pulse inline-flex items-center rounded-full bg-white px-8 py-4 font-semibold text-blood hover:bg-zinc-100 transition-colors">Przejdź do formularza rekrutacyjnego</a>
+        </div>
+        <p class="mt-4 text-xs text-white/40">Docelowo: pełny formularz rekrutacyjny (region, CV, zgody RODO) w kolejnej iteracji demo.</p>
+      </div>
+      <div class="lg:col-span-2 reveal">
+        <div class="rounded-2xl border border-white/15 bg-black/20 backdrop-blur-sm p-7 space-y-6">
+          <div class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <div class="font-display font-bold text-white text-sm">Sieć kontaktów w całej Polsce</div>
+              <div class="text-sm text-white/60 mt-1">14 regionów, setki absolwentów w biznesie.</div>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <div class="font-display font-bold text-white text-sm">Realne doświadczenie</div>
+              <div class="text-sm text-white/60 mt-1">Projekty, konferencje i praca z partnerami biznesowymi.</div>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/><path d="M8.5 14 6 22l6-3 6 3-2.5-8"/></svg>
+            </div>
+            <div>
+              <div class="font-display font-bold text-white text-sm">Certyfikat po zakończeniu</div>
+              <div class="text-sm text-white/60 mt-1">Potwierdzenie doświadczenia do CV i portfolio.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-noir text-zinc-500 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
+    <div>
+      <img src="assets/img/logo-white.png" alt="SF BCC" class="h-7 w-auto mb-4">
+      <p class="text-sm leading-relaxed max-w-[30ch]">Fundacja Studenckie Forum Business Centre Club, Plac Trzech Krzyży 18, 00-499 Warszawa.</p>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Nawigacja</div>
+      <ul class="space-y-2 text-sm">
+        <li><a href="#" class="hover:text-white transition-colors">Strona główna</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">O nas</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Projekty</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Partnerzy</a></li>
+        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Kontakt</div>
+      <ul class="space-y-2 text-sm">
+        <li><a href="tel:795235064" class="hover:text-white transition-colors">795 235 064</a></li>
+        <li><a href="mailto:kontakt@sfbcc.org.pl" class="hover:text-white transition-colors">kontakt@sfbcc.org.pl</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Social media</div>
+      <div class="flex gap-3">
+        <a href="https://www.facebook.com/studenckieForumBusinessCentreClub/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12"/></svg></a>
+        <a href="https://www.instagram.com/sf_bcc/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://www.linkedin.com/company/sfbcc/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5M3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+        <a href="https://www.youtube.com/user/sfbusinesscentreclub" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12s0-3.2-.4-4.7c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.5c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.7c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.5c.9-.2 1.6-.9 1.8-1.8.4-1.5.4-4.7.4-4.7M10 15V9l5.2 3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-xs text-zinc-600">© 2026 Fundacja Studenckie Forum Business Centre Club. Wszelkie prawa zastrzeżone.</div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) { revealEls.forEach(el => el.classList.add('is-visible')); }
+  else {
+    const io = new IntersectionObserver((entries) => entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('is-visible'), i * 60); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  const cal = document.getElementById('miniCalendar');
+  const daysInMonth = 31; const firstDayOffset = 5;
+  const calEvents = {
+    12: 'Warsztat: Zarządzanie projektem od A do Z, Warszawa',
+    20: 'Spotkanie networkingowe regionu Kraków'
+  };
+  for (let i = 0; i < firstDayOffset; i++) cal.appendChild(document.createElement('div'));
+  for (let day = 1; day <= daysInMonth; day++) {
+    const cell = document.createElement('div');
+    const hasEvent = calEvents.hasOwnProperty(day);
+    if (hasEvent) {
+      cell.title = calEvents[day];
+      cell.innerHTML = day + '<span class="block w-1 h-1 rounded-full bg-accent mx-auto mt-0.5"></span>';
+      cell.className = 'py-1.5 rounded-lg bg-accent/15 text-accent font-semibold cursor-default';
+    } else {
+      cell.textContent = day;
+      cell.className = 'py-1.5 rounded-lg text-zinc-500';
+    }
+    cal.appendChild(cell);
+  }
+
+  function countUp(el, target) {
+    if (!el) return;
+    if (reduceMotion) { el.textContent = target; return; }
+    let running = false;
+    const io2 = new IntersectionObserver((entries) => entries.forEach(e => {
+      if (!e.isIntersecting || running) return;
+      running = true;
+      el.textContent = '0';
+      const dur = 1000; const t0 = performance.now();
+      function tick(t) {
+        const p = Math.min(1, (t - t0) / dur);
+        el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+        else running = false;
+      }
+      requestAnimationFrame(tick);
+    }), { threshold: .5 });
+    io2.observe(el);
+  }
+  countUp(document.getElementById('counterYears'), 25);
+
+  const dots = document.querySelectorAll('.region-dot');
+  const rows = document.querySelectorAll('.region-row');
+  const pulseRing = document.getElementById('pulseRing');
+  const regionScroll = document.querySelector('.region-scroll');
+  function setActiveRegion(region, scrollList) {
+    dots.forEach(d => d.classList.toggle('active', d.dataset.region === region));
+    rows.forEach(r => r.classList.toggle('active', r.dataset.region === region));
+    const activeDot = Array.from(dots).find(d => d.dataset.region === region);
+    if (activeDot && pulseRing) {
+      pulseRing.setAttribute('cx', activeDot.getAttribute('cx'));
+      pulseRing.setAttribute('cy', activeDot.getAttribute('cy'));
+      pulseRing.classList.add('active');
+    }
+    if (scrollList && regionScroll) {
+      const activeRow = Array.from(rows).find(r => r.dataset.region === region);
+      if (activeRow) {
+        const rowRect = activeRow.getBoundingClientRect();
+        const containerRect = regionScroll.getBoundingClientRect();
+        const delta = (rowRect.top - containerRect.top) - (regionScroll.clientHeight / 2 - activeRow.clientHeight / 2);
+        regionScroll.scrollTo({ top: regionScroll.scrollTop + delta, behavior: reduceMotion ? 'auto' : 'smooth' });
+      }
+    }
+  }
+  dots.forEach(d => d.addEventListener('mouseenter', () => setActiveRegion(d.dataset.region, true)));
+  rows.forEach(r => r.addEventListener('mouseenter', () => setActiveRegion(r.dataset.region, false)));
+</script>
+</body>
+</html>
