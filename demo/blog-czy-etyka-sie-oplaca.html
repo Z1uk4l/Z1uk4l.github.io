@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Czy etyka się opłaca? - Blog SF BCC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode: 'class', theme: { extend: {
+    colors: { accent: { DEFAULT: '#E30613', dark: '#B8050F' }, noir: '#170D0D', blood: '#3D0A0C', paper: '#FAFAF8', ink: '#1C1C1E' },
+    fontFamily: { display: ['Montserrat', 'sans-serif'], sans: ['Inter', 'sans-serif'] },
+  } } }
+</script>
+<style>
+  :root { --section-bg: #FAFAF8; }
+  html.dark { --section-bg: #170D0D; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--section-bg); transition: background-color .25s ease; }
+  * { transition: background-color .35s ease, color .35s ease, border-color .35s ease; }
+  .reveal { opacity:0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.is-visible { opacity:1; transform:none; }
+  .brand-chip { display:inline-block; width:.7rem; height:.7rem; background:#E30613; margin-right:.6rem; flex-shrink:0; }
+  .grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: .03; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  html.dark .grain { opacity: .045; mix-blend-mode: overlay; }
+  .cta-pulse { position: relative; }
+  .cta-pulse::after { content:''; position:absolute; inset:0; border-radius:inherit; box-shadow: 0 0 0 0 rgba(227,6,19,.55); animation: ctaPulse 2.6s ease-out infinite; pointer-events:none; }
+  @keyframes ctaPulse { 0% { box-shadow: 0 0 0 0 rgba(227,6,19,.55); } 70% { box-shadow: 0 0 0 14px rgba(227,6,19,0); } 100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); } }
+  #mobileMenu { display: grid; grid-template-rows: 0fr; overflow: hidden; opacity: 0; transition: grid-template-rows .3s ease, opacity .25s ease; }
+  #mobileMenu.open { grid-template-rows: 1fr; opacity: 1; }
+  #mobileMenu > div { overflow: hidden; }
+  @media (min-width: 1024px) { #mobileMenu { display: none; } }
+  .dot-grid { background-image: radial-gradient(rgba(255,255,255,.1) 1px, transparent 1px); background-size: 22px 22px; }
+  .article-content p { margin-bottom: 1.5rem; line-height: 1.8; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } .reveal { opacity:1; transform:none; } html{scroll-behavior:auto;} .cta-pulse::after { animation: none; } }
+</style>
+</head>
+<body class="font-sans text-zinc-600 dark:text-zinc-400 antialiased overflow-x-hidden">
+
+<div class="grain"></div>
+<div class="h-[3px] bg-accent w-full"></div>
+<header class="sticky top-0 z-50 bg-paper/90 dark:bg-noir/90 backdrop-blur border-b border-zinc-200 dark:border-white/5">
+  <div class="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+    <a href="strona-glowna.html" class="shrink-0">
+      <img src="assets/img/logo-color.png" alt="SF BCC" class="h-9 w-auto dark:hidden">
+      <img src="assets/img/logo-white.png" alt="SF BCC" class="h-9 w-auto hidden dark:block">
+    </a>
+    <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-zinc-600 dark:text-zinc-500">
+      <a href="strona-glowna.html" class="hover:text-accent transition-colors">Strona główna</a>
+      <a href="o-nas.html" class="hover:text-accent transition-colors">O nas</a>
+      <a href="projekty.html" class="hover:text-accent transition-colors">Projekty</a>
+      <a href="partnerzy.html" class="hover:text-accent transition-colors">Partnerzy</a>
+      <a href="blog.html" class="text-accent">Blog</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button id="themeToggle" type="button" class="p-2.5 rounded-full border border-zinc-300 dark:border-white/15 text-ink dark:text-white hover:border-accent hover:text-accent transition-colors" aria-label="Przełącz jasny/ciemny motyw">
+        <svg id="iconSun" class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        <svg id="iconMoon" class="w-4 h-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+      </button>
+      <a href="rekrutacja.html" class="cta-pulse hidden lg:inline-flex items-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark transition-colors">Rekrutacja</a>
+      <button id="menuBtn" class="lg:hidden p-2 -mr-2 text-ink dark:text-white" aria-label="Otwórz menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="lg:hidden"><div><div class="border-t border-zinc-200 dark:border-white/10 px-6 py-4 flex flex-col gap-4 font-medium text-zinc-700 dark:text-zinc-300">
+    <a href="strona-glowna.html" class="hover:text-accent">Strona główna</a>
+    <a href="o-nas.html" class="hover:text-accent">O nas</a>
+    <a href="projekty.html" class="hover:text-accent">Projekty</a>
+    <a href="partnerzy.html" class="hover:text-accent">Partnerzy</a>
+    <a href="blog.html" class="text-accent">Blog</a>
+    <a href="rekrutacja.html" class="inline-flex justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white">Rekrutacja</a>
+  </div></div></div>
+</header>
+
+<!-- HERO -->
+<section class="relative bg-blood dot-grid overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(60% 60% at 85% 10%, rgba(0,0,0,.35), transparent 70%);"></div>
+  <div class="max-w-3xl mx-auto px-6 py-24 relative reveal">
+    <a href="blog.html" class="inline-flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white transition-colors mb-8">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Wróć do bloga
+    </a>
+    <div class="flex items-center gap-3 text-xs font-semibold tracking-[0.1em] uppercase mb-5">
+      <span class="text-white bg-white/15 rounded-full px-3 py-1">Artykuły</span>
+      <span class="text-white/50">17.03.2021</span>
+    </div>
+    <h1 class="font-display font-black text-4xl md:text-5xl tracking-tight text-white" style="line-height:1.15">Czy etyka się opłaca?</h1>
+  </div>
+</section>
+
+<!-- TREŚĆ -->
+<section class="relative py-20 overflow-hidden" style="background: var(--section-bg);">
+  <div class="max-w-3xl mx-auto px-6 reveal">
+
+    <div class="flex items-center gap-4 pb-10 mb-10 border-b border-zinc-200 dark:border-white/10">
+      <img src="assets/img/blog/etyka-autor.png" alt="Sabina Sęk" class="w-14 h-14 rounded-full object-cover">
+      <div>
+        <div class="font-display font-bold text-ink dark:text-white">Sabina Sęk</div>
+        <div class="text-sm text-zinc-500">Wicemenedżer Ogólnopolska Pionu Public Relations</div>
+      </div>
+    </div>
+
+    <div class="article-content text-zinc-600 dark:text-zinc-400 text-lg">
+      <p>Skoro głównym celem każdego przedsiębiorcy jest zysk i ta fundamentalna prawda nie zmienia się od tysiącleci, to czy jest tutaj miejsce na "etykę"? W pierwszym odruchu można się zastanawiać, ale po namyśle odpowiedź jest prosta. Etyka nie przeszkadza, a ten zysk wręcz umożliwia. Działania etyczne w sposób skuteczny i konkretny wspierają maksymalizację długoterminowej wartości dla właściciela.</p>
+
+      <p>Popularne stwierdzenie "Ethics pays" ("Etyka się opłaca") odnosi się nie tylko do zysków, jakie może czerpać przedsiębiorstwo z działań etycznych, ale przede wszystkim ma na celu zaakcentowanie wartości, jaką etyka wnosi w otoczenie jednostki etycznej. Oznacza to, że rolą etyki jest ukierunkowanie przedsiębiorstw na działania na rzecz pracowników, społeczności lokalnej, klientów i kontrahentów, czy ochrony środowiska. Działania etyczne są zorientowane na przyszłość, a więc zaspokajanie potrzeb społeczeństwa poprzez wprowadzenie innowacyjnych produktów czy akcje proekologiczne długofalowo ustanawiające miejsce przedsiębiorstwa w otoczeniu.</p>
+
+      <p>Do podstawowych zasad i wartości, jakimi kieruje się przedsiębiorstwo należą odpowiedzialność, przejrzystość, aktywna obecność w środowisku oraz etyczne zachowanie. Odpowiedzialność oznacza, że przedsiębiorstwo jest gotowe przyjąć ewentualnie konsekwencje za wpływ, jaki wywiera na otoczenie. Przejrzystość zakłada udostępnianie informacji o decyzjach i działaniach związanych z funkcjonowaniem przedsiębiorstwa. W aktywnej obecności w środowisku ważna jest świadomość, że przedsiębiorstwo nie działa w oderwaniu od otoczenia. Etyczne zachowanie ma miejsce, gdy wszystkie decyzje podejmowane i wykonywane są uczciwie, rzetelnie, wiarygodnie i zgodnie z zasadami moralnymi takimi jak sprawiedliwość, szacunek i szczerość.</p>
+
+      <p>Badanie przeprowadzone przez Crido Taxand, Pracodawców RP i ICAN Institute w 2013 roku wskazuje na negatywne konsekwencje zachowań nieetycznych na wielu płaszczyznach. 73 proc. zapytanych członków zarządu oraz 77 proc. badanych pracujących w działach HR wskazało na straty wizerunkowe związane ze złamaniem lub naruszeniem zasad etycznych. Badania M. Clarksona udowodniły, że przedsiębiorstwa, które kładą nacisk na etykę i relację z otoczeniem, odnoszą z tego tytułu profity: dysponują lepszymi informacjami z otoczenia, co pozwala im w pełni wykorzystać szansę i uniknąć zagrożeń.</p>
+
+      <p>Pełne poznanie i stosowanie przez świat biznesu zasad etyki bezpośrednio przekłada się na zysk przedsiębiorstwa. Zgodnie z zasadą PYMWYMI (put your money where your mouth is), przedsiębiorcy zyskują bezpośrednio dzięki zachowaniom etycznym. Zasada ta opisuje postawę konsumentów, którzy częściej i chętniej wybierają produkty przedsiębiorstw stosujących się do etyki i wartości wyznawanych przez nabywcę. Wśród innych korzyści wymienić można ograniczenie ryzyka negatywnego odbioru społecznego, uniknięcie kar oraz spadek kosztów wynikających z transakcji spowodowany zaufaniem kontrahentów.</p>
+
+      <p>Dobra atmosfera w pracy sprzyja zaangażowaniu i stanowi motywację do lepszych osiągnięć. Zadaniem przełożonego jest stworzenie warunków pracy, w których relacje między pracownikami oparte są na prawości, uczciwości i współpracy. Pomocne w tym może okazać się ustalenie w przedsiębiorstwie kodeksu etycznego, spisanego w jasno sformułowanych punktach i przedstawionego pracownikom na każdym szczeblu zawodowym. Udowodniły to badania przeprowadzone na grupie brytyjskich przedsiębiorstw: spółki stosujące kodeks etyczny osiągnęły lepsze i wyższe wyniki niż spółki nieposiadające takiego kodeksu.</p>
+
+      <p>W tzw. warunkach nowej ekonomii rośnie znaczenie etyki w biznesie, z powodu większego wyczulenia odbiorców na przekłamania. Dziś pytanie "czy warto" jest pytaniem retorycznym. Zastanowić raczej należy się nad tym, jak połączyć najskuteczniej obie z pozoru przeciwstawne sfery: etykę i biznes. Jest to wymóg dzisiejszego środowiska biznesowego.</p>
+    </div>
+
+    <div class="mt-14 pt-8 border-t border-zinc-200 dark:border-white/10">
+      <a href="blog.html" class="inline-flex items-center gap-2 text-sm font-semibold text-ink dark:text-white hover:text-accent transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Zobacz więcej wpisów na blogu
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA REKRUTACJA -->
+<section id="rekrutacja" class="relative bg-blood py-24 overflow-hidden dot-grid">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(60% 60% at 15% 90%, rgba(0,0,0,.35), transparent 70%);"></div>
+  <div class="max-w-6xl mx-auto px-6 relative text-center reveal">
+    <h2 class="font-display font-extrabold text-3xl md:text-5xl text-white tracking-tight leading-[1.15]">Zamiast marzyć,<br>zacznij działać</h2>
+    <p class="mt-5 text-white/70 max-w-[46ch] mx-auto leading-relaxed">Dołącz do jednego z 14 regionów SF BCC i zdobądź pierwsze doświadczenie w biznesie.</p>
+    <a href="rekrutacja.html" class="cta-pulse mt-9 inline-flex items-center rounded-full bg-white px-8 py-4 font-semibold text-blood hover:bg-zinc-100 transition-colors">Przejdź do formularza rekrutacyjnego</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-noir text-zinc-500 border-t border-white/5">
+  <div class="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-10">
+    <div>
+      <img src="assets/img/logo-white.png" alt="SF BCC" class="h-7 w-auto mb-4">
+      <p class="text-sm leading-relaxed max-w-[30ch]">Fundacja Studenckie Forum Business Centre Club, Plac Trzech Krzyży 18, 00-499 Warszawa.</p>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Nawigacja</div>
+      <ul class="space-y-2 text-sm">
+        <li><a href="strona-glowna.html" class="hover:text-white transition-colors">Strona główna</a></li>
+        <li><a href="o-nas.html" class="hover:text-white transition-colors">O nas</a></li>
+        <li><a href="projekty.html" class="hover:text-white transition-colors">Projekty</a></li>
+        <li><a href="partnerzy.html" class="hover:text-white transition-colors">Partnerzy</a></li>
+        <li><a href="blog.html" class="hover:text-white transition-colors">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Kontakt</div>
+      <ul class="space-y-2 text-sm">
+        <li><a href="tel:795235064" class="hover:text-white transition-colors">795 235 064</a></li>
+        <li><a href="mailto:kontakt@sfbcc.org.pl" class="hover:text-white transition-colors">kontakt@sfbcc.org.pl</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="font-display font-semibold text-white mb-4 text-sm">Social media</div>
+      <div class="flex gap-3">
+        <a href="https://www.facebook.com/studenckieForumBusinessCentreClub/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12"/></svg></a>
+        <a href="https://www.instagram.com/sf_bcc/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://www.linkedin.com/company/sfbcc/" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5M3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+        <a href="https://www.youtube.com/user/sfbusinesscentreclub" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:border-accent hover:text-accent transition-colors" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12s0-3.2-.4-4.7c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.5c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.7c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.5c.9-.2 1.6-.9 1.8-1.8.4-1.5.4-4.7.4-4.7M10 15V9l5.2 3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-6 py-6 text-xs text-zinc-600">© 2026 Fundacja Studenckie Forum Business Centre Club. Wszelkie prawa zastrzeżone.</div>
+  </div>
+</footer>
+
+<script>
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  function applyTheme(theme) {
+    root.classList.toggle('dark', theme === 'dark');
+    try { localStorage.setItem('sfbcc-theme', theme); } catch (e) {}
+  }
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem('sfbcc-theme'); } catch (e) {}
+  if (savedTheme) applyTheme(savedTheme);
+  themeToggle.addEventListener('click', () => {
+    applyTheme(root.classList.contains('dark') ? 'light' : 'dark');
+  });
+
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) { revealEls.forEach(el => el.classList.add('is-visible')); }
+  else {
+    const io = new IntersectionObserver((entries) => entries.forEach((e,i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('is-visible'), i * 60); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  }
+</script>
+</body>
+</html>
